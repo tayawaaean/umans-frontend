@@ -30,29 +30,29 @@ Tech Stack Review
   /utils      → Helper functions
   /styles     → Global styles (MUI Theme)
 
-── src/
+├── src/
 │   ├── api/                  # API calls & Axios wrapper
 │   │   ├── authApi.js        # Authentication API (login, logout, refresh token)
 │   │   ├── userApi.js        # User-related API calls
 │   │   ├── axiosInstance.js  # Pre-configured Axios instance
 │   ├── components/           # Reusable UI components
-│   │   ├── Navbar.js         # Navigation bar
-│   │   ├── Sidebar.js        # Sidebar component
-│   │   ├── ProtectedRoute.js # Route protection (RBAC)
+│   │   ├── Navbar.jsx        # Navigation bar
+│   │   ├── Sidebar.jsx       # Sidebar component
+│   │   ├── ProtectedRoute.jsx # Route protection (RBAC)
 │   ├── hooks/                # Custom hooks
 │   │   ├── useAuth.js        # Hook for authentication state
 │   │   ├── useFetch.js       # Hook for API fetching with caching
 │   ├── layouts/              # Layout components
-│   │   ├── AdminLayout.js    # Layout for admin pages
-│   │   ├── UserLayout.js     # Layout for user pages
+│   │   ├── AdminLayout.jsx    # Layout for admin pages
+│   │   ├── UserLayout.jsx     # Layout for user pages
 │   ├── pages/                # Main application pages
 │   │   ├── Auth/
-│   │   │   ├── Login.js      # Login page
-│   │   │   ├── Register.js   # Registration page
+│   │   │   ├── Login.jsx      # Login page
+│   │   │   ├── Register.jsx   # Registration page
 │   │   ├── Dashboard/
-│   │   │   ├── AdminDashboard.js  # Admin dashboard
-│   │   │   ├── UserDashboard.js   # User dashboard
-│   │   ├── NotFound.js       # 404 Page
+│   │   │   ├── AdminDashboard.jsx  # Admin dashboard
+│   │   │   ├── UserDashboard.jsx   # User dashboard
+│   │   ├── NotFound.jsx       # 404 Page
 │   ├── store/                # Redux state management
 │   │   ├── slices/
 │   │   │   ├── authSlice.js  # Authentication state
@@ -63,9 +63,10 @@ Tech Stack Review
 │   │   ├── validation.js     # Form validation helpers
 │   ├── styles/               # Global styles and themes
 │   │   ├── theme.js          # MUI theme configuration
-│   ├── App.js                # Main React component
-│   ├── index.js              # React entry point
-│   ├── routes.js             # Centralized route definitions
+│   ├── App.jsx               # Main React component
+│   ├── main.jsx              # React entry point
+│   ├── routes.jsx            # Centralized route definitions
+│   ├── index.css             # Global styles
 │
 ├── .env                      # Environment variables (API URL, secrets)
 ├── package.json              # Dependencies & scripts
