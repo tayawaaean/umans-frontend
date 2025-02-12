@@ -3,13 +3,14 @@ import { Box } from "@mui/material";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
+
 const drawerWidth = 240; // Width of the sidebar
 
 const AdminLayout = ({ children }) => {
   return (
     <Box sx={{ display: "flex" }}>
       {/* Sidebar */}
-      <Sidebar />
+        <Sidebar />
 
       {/* Main Content Area */}
       <Box sx={{ flexGrow: 1, ml: `${drawerWidth}px`, width: `calc(100% - ${drawerWidth}px)` }}>
