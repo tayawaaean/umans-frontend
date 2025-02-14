@@ -20,19 +20,19 @@ import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
 
 const categories = [
   {
-    id: 'Build',
+    id: 'Manage',
     children: [
       {
-        id: 'Authentication',
+        id: 'Users',
         icon: <PeopleIcon />,
         active: true,
       },
-      { id: 'Database', icon: <DnsRoundedIcon /> },
-      { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
-      { id: 'Hosting', icon: <PublicIcon /> },
-      { id: 'Functions', icon: <SettingsEthernetIcon /> },
+      { id: 'Apps', icon: <DnsRoundedIcon /> },
+      { id: 'Roles', icon: <PermMediaOutlinedIcon /> },
+      { id: 'User Types', icon: <PublicIcon /> },
+      { id: 'Google Accounts', icon: <SettingsEthernetIcon /> },
       {
-        id: 'Machine learning',
+        id: 'Authenticated',
         icon: <SettingsInputComponentIcon />,
       },
     ],
@@ -69,13 +69,13 @@ export default function Navigator(props) {
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-          Paperbase
+          UMANS
         </ListItem>
         <ListItem sx={{ ...item, ...itemCategory }}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText>Project Overview</ListItemText>
+          <ListItemText>Overview</ListItemText>
         </ListItem>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#101F33' }}>

@@ -1,14 +1,8 @@
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
+//import mui components
+import { Divider, FormLabel, FormControl, TextField, Button, Checkbox, Typography, Box, Alert } from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Divider from '@mui/material/Divider';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
@@ -17,12 +11,20 @@ import AppTheme from '../../shared-theme/AppTheme';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../components/CustomIcons';
 
+//import react/redux components
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 
-const Card = styled(MuiCard)(({ theme }) => ({
+//import reducer functions
+import { login } from "../../store/slices/authSlice";
+
+//import validation resources
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "../../utils/validationSchema";
+
+export const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignSelf: 'center',
@@ -41,7 +43,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
   }),
 }));
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+export const SignInContainer = styled(Stack)(({ theme }) => ({
   height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
   minHeight: '100%',
   width: '100vw',
@@ -66,17 +68,16 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
 }));
 
 export default function SignIn(props) {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  
   const [open, setOpen] = React.useState(false);
   const { user, loading, error } = useSelector((state) => state.auth);
 
-
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
 
   useEffect(() => {
     if (user) {
@@ -84,6 +85,13 @@ export default function SignIn(props) {
     }
   }, [user, navigate]);
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleGoogle = () => {
+    setOpen(true);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -93,47 +101,15 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email')
-    const password = data.get('password')
-
+  const onSubmit = async (data) => {
     try{
-        const result = await dispatch(login({ email, password }));
+        const result = await dispatch(login(data));
         if (result.meta.requestStatus === "fulfilled") {
             navigate("/"); // Redirect after successful login
         }
     } catch (error){
         console.log(error)
     }
-  };
-
-  const validateInputs = () => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
-    }
-
-    if (!password.value || password.value.length < 8) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 8 characters long.');
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
-
-    return isValid;
   };
 
   return (
@@ -150,9 +126,10 @@ export default function SignIn(props) {
           >
             Sign in
           </Typography>
+          {error && <Alert severity="error">{error}</Alert>}
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             noValidate
             sx={{
               display: 'flex',
@@ -164,8 +141,9 @@ export default function SignIn(props) {
             <FormControl>
               <FormLabel htmlFor="email">Email</FormLabel>
               <TextField
-                error={emailError}
-                helperText={emailErrorMessage}
+                {...register("email")}
+                error={!!errors.email}
+                helperText={errors.email?.message}
                 id="email"
                 type="email"
                 name="email"
@@ -175,14 +153,15 @@ export default function SignIn(props) {
                 required
                 fullWidth
                 variant="outlined"
-                color={emailError ? 'error' : 'primary'}
+                color={errors.email ? 'error' : 'primary'}
               />
             </FormControl>
             <FormControl>
               <FormLabel htmlFor="password">Password</FormLabel>
               <TextField
-                error={passwordError}
-                helperText={passwordErrorMessage}
+                {...register("password")}
+                error={!!errors.password}
+                helperText={errors.password?.message}
                 name="password"
                 placeholder="••••••••"
                 type="password"
@@ -192,7 +171,7 @@ export default function SignIn(props) {
                 required
                 fullWidth
                 variant="outlined"
-                color={passwordError ? 'error' : 'primary'}
+                color={errors.password ? 'error' : 'primary'}
               />
             </FormControl>
             <FormControlLabel
@@ -204,9 +183,9 @@ export default function SignIn(props) {
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              disabled={loading}
             >
-              Sign in
+              {loading ? "Signing in..." : "Sign in"}
             </Button>
             <Link
               component="button"
@@ -239,7 +218,7 @@ export default function SignIn(props) {
             <Typography sx={{ textAlign: 'center' }}>
               Don&apos;t have an account?{' '}
               <Link
-                href="/material-ui/getting-started/templates/sign-in/"
+                href="/register/"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >

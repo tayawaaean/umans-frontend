@@ -18,7 +18,8 @@ export const logout = async () => {
 const authApi = {
     login: (credentials) => axiosInstance.post("/auth/superLogin", credentials),
     logout: () => axiosInstance.post("/auth/logout"),
-    refreshToken: () => axiosInstance.post("/auth/refresh"),
+    refreshToken: (user) => axiosInstance.post("/auth/refresh", user),
+    isAuthenticated: () => axiosInstance.get("/auth/isAuthenticated"),
   };
 
 export default authApi;

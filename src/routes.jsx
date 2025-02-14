@@ -4,6 +4,7 @@ import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import AdminLayout from "./layouts/AdminLayout";
 import Login from "./pages/Auth/Login";
 import SignIn from './pages/Auth/SignIn'
+import SignUp from "./pages/Auth/SignUp";
 import ProtectedRoute from "./components/ProtectedRoute"; // Protect routes
 import Paperbase from "./components/Paperbase";
 
@@ -13,7 +14,8 @@ const AppRoutes = () => {
       <Routes>
         {/* */}
         <Route path="/login" element={<SignIn />} />
-        
+        <Route path="/register" element={<SignUp />} />
+
         {/* */}
         <Route path = "/" element={
           <ProtectedRoute allowedRoles={["user", "admin"]}>

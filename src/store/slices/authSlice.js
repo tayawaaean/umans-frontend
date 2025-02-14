@@ -16,16 +16,30 @@ export const login = createAsyncThunk("auth/superLogin", async (credentials, { r
 export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
     try {
         await authApi.logout();
+        console.log("logout function getting run at slice")
         return null;
     } catch (error) {
         return rejectWithValue(error.response || "Logout failed");
-}
+    }
+});
+
+
+// Async action to handle logout
+export const validateTokens = createAsyncThunk("auth/isAuthenticated", async (_, { rejectWithValue }) => {
+    try {
+        const response = await authApi.isAuthenticated();
+        console.log("isAuth function getting run at slice")
+        console.log("response at is auth fucntion", response)
+        return response.data;
+    } catch (error) {
+        return rejectWithValue(error.response || "Session expired!");
+    }
 });
 
 // Async thunk for refreshing token
-export const refreshAccessToken = createAsyncThunk("auth/refresh", async (_, { rejectWithValue }) => {
+export const refreshAccessToken = createAsyncThunk("auth/refresh", async (user, { rejectWithValue }) => {
     try {
-        const response = await authApi.refreshToken()
+        const response = await authApi.refreshToken(user)
         return response.data;
     } catch (error) {
         return rejectWithValue(error.response.data || "Token refresh failed");
@@ -66,10 +80,17 @@ const authSlice = createSlice({
             .addCase(refreshAccessToken.fulfilled, (state, action) => {
                 state.accessToken = action.payload.accessToken;
                 state.isAuthenticated = true;
+                localStorage.setItem("accessToken", action.payload.accessToken)
             })
             .addCase(refreshAccessToken.rejected, (state) => {
                 state.accessToken = null;
                 state.isAuthenticated = false;
+            })
+            .addCase(validateTokens.fulfilled, (state) => {
+                state.isAuthenticated = true;
+            })
+            .addCase(validateTokens.rejected, (state, action) => {
+                state.error = action.payload;
             })
             .addCase(logout.fulfilled, (state) => {
                 state.user = null;

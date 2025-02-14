@@ -23,6 +23,7 @@ function Header(props) {
   const { onDrawerToggle } = props;
   const dispatch = useDispatch();
 
+
   const handleLogout = () => {
     dispatch(logout());
   };
