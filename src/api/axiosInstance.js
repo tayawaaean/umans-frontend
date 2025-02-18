@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { store } from "../store/store";
-import { refreshAccessToken } from '../store/slices/authSlice';
+import { refreshAccessToken, clearTokens } from '../store/slices/authSlice';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_REACT_APP_API_URL || 'http://localhost:5000/api/',
@@ -25,8 +25,8 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    console.log("responding to 401:", error.response.data)
     if (error.response?.status === 401 && !originalRequest._retry) {
+      console.log("responding to 401:", error.response.data)
       originalRequest._retry = true;
       try {
         //const { store } = await import("../store/store")
@@ -35,8 +35,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (err) {
         console.log("error on trying to refresh", err)
-        store.dispatch(logout());
-        window.location.href = "/login"; // Redirect to login on refresh failure
+        store.dispatch(clearTokens());
       }
     }
     return Promise.reject(error);

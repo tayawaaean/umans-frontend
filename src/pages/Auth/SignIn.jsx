@@ -11,6 +11,11 @@ import AppTheme from '../../shared-theme/AppTheme';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../components/CustomIcons';
 
+//google imports
+import { googleLogin, callback } from "../../store/slices/googleSlice"; // Update with actual path
+import { googleApi } from "../../api/authApi" 
+import { useGoogleLogin } from "@react-oauth/google";
+
 //import react/redux components
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -79,20 +84,53 @@ export default function SignIn(props) {
     resolver: yupResolver(loginSchema),
   });
 
+  //run before rendering the component with the hook
   useEffect(() => {
     if (user) {
     navigate("/"); // Redirect to dashboard after login
     }
   }, [user, navigate]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  ///google handlers
+  
+  const handleGoogle2 = useGoogleLogin({
+    flow: "auth-code", // Use "auth-code" flow instead of "implicit"
+    redirect_uri: 'http://localhost:3001/api/auth/google/callback',
+    onSuccess: (response) => {
+        console.log("Google Auth Code:", response.code);
+        //dispatch(loginWithGoogle(response.code));
+    },
+    onError: (error) => console.error("Google Login Failed:", error),
+  });
+
+  const handleGoogle = async() => {
+    try{
+      const url = await googleApi.getGoogleLoginUrl(); // Send to backend
+      const popup = window.open(url, "Google Login", "width=500,height=600");
+      const checkPopup = setInterval(async () => {
+        if (!popup || popup.closed) {
+          clearInterval(checkPopup);
+          
+          // Get auth details from backend (assumes backend stores in session or cookie)
+          console.log(popup)
+          //const response = await callback();
+          
+          // Dispatch login action to store user data in Redux
+          //dispatch(loginWithGoogle(response));
+
+          console.log("Google Login Success:");
+        }
+      }, 1000);
+    }catch(error){
+      console.log("Google login error: ",error)
+    }
   };
 
-  const handleGoogle = () => {
-    setOpen(true);
+  const handleError = () => {
+    console.error("Google Sign-In failed");
   };
 
+  //password reset handlers
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -101,6 +139,7 @@ export default function SignIn(props) {
     setOpen(false);
   };
 
+  //sigin handler
   const onSubmit = async (data) => {
     try{
         const result = await dispatch(login(data));
@@ -202,7 +241,7 @@ export default function SignIn(props) {
             <Button
               fullWidth
               variant="outlined"
-              onClick={() => alert('Sign in with Google')}
+              onClick={handleGoogle2}
               startIcon={<GoogleIcon />}
             >
               Sign in with Google

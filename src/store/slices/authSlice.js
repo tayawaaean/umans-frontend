@@ -8,7 +8,11 @@ export const login = createAsyncThunk("auth/superLogin", async (credentials, { r
         console.log(response)
         return response.data; // Expecting { accessToken, user }
     } catch (error) {
-        return rejectWithValue(error.response || "Login failed");
+        if(error.response.data.errors){
+            const eachError = error.response.data.errors.map(err => err.msg)
+            return rejectWithValue(eachError || "Login failed");
+        }
+        return rejectWithValue(error.response?.data?.msg || "Login failed");
     }
 });
   
@@ -19,7 +23,7 @@ export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValu
         console.log("logout function getting run at slice")
         return null;
     } catch (error) {
-        return rejectWithValue(error.response || "Logout failed");
+        return rejectWithValue(error.response?.data?.msg || "Logout failed");
     }
 });
 
@@ -32,7 +36,11 @@ export const validateTokens = createAsyncThunk("auth/isAuthenticated", async (_,
         console.log("response at is auth fucntion", response)
         return response.data;
     } catch (error) {
-        return rejectWithValue(error.response || "Session expired!");
+        if(error.response.data.errors){
+            const eachError = error.response.data.errors.map(err => err.msg)
+            return rejectWithValue(eachError || "Session Expired");
+        }
+        return rejectWithValue(error.response?.data?.msg || "No valid session!");
     }
 });
 
@@ -58,7 +66,17 @@ const initialState = {
 const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        clearTokens: (state, action) => {
+            state.user = null;
+            state.accessToken = null;
+            state.loading = false
+            state.error = action.payload;
+            state.isAuthenticated = false;
+            localStorage.removeItem("user");
+            localStorage.removeItem("accessToken")
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state) => {
@@ -103,5 +121,5 @@ const authSlice = createSlice({
             });
     },
 });
-
+export const { clearTokens } = authSlice.actions;
 export default authSlice.reducer;
