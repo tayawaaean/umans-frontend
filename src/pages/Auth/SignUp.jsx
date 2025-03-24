@@ -1,56 +1,90 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl from '@mui/material/FormControl';
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
+import Grid from '@mui/material/Grid2';
+import { Alert, Typography, Box, Button, Stack,Divider, TextField, FormLabel, FormControl, Link, CssBaseline } from '@mui/material';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../../shared-theme/AppTheme';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../components/CustomIcons';
 
-//import custom styling from SignIn
-import {Card, SignInContainer} from './SignIn'
 
 //import logic components from react and redux
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 //import reducer functions
-import { login } from "../../store/slices/authSlice";
+import { createUser } from "../../store/slices/usersSlice";
+
 
 //import validation resources
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../utils/validationSchema";
 
+
+export const Card = styled(MuiCard)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignSelf: 'center',
+  width: '100%',
+  padding: theme.spacing(4),
+  gap: theme.spacing(2),
+  margin: 'auto',
+  [theme.breakpoints.up('sm')]: {
+    maxWidth: '650px',
+  },
+  boxShadow:
+    'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
+  ...theme.applyStyles('dark', {
+    boxShadow:
+      'hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px',
+  }),
+}));
+
+export const SignUpContainer = styled(Stack)(({ theme }) => ({
+  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
+  minHeight: '100%',
+  width: '100vw',
+  flex:1,
+  justifyContent: 'space-between',
+  padding: theme.spacing(2),
+  [theme.breakpoints.up('sm')]: {
+    padding: theme.spacing(4),
+  },
+  '&::before': {
+    content: '""',
+    display: 'block',
+    position: 'absolute',
+    zIndex: -1,
+    inset: 0,
+    backgroundImage:
+      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+    backgroundRepeat: 'no-repeat',
+    ...theme.applyStyles('dark', {
+      backgroundImage:
+        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+    }),
+  },
+}));
+
 export default function SignUp(props) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { loading, error } = useSelector((state) => state.auth);
+  const {message, loading, error } = useSelector((state) => state.users);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(registerSchema),
   });
 
   const onSubmit = async (data) => {
-    console.log(data)  
-    try{
-        
-      //const result = await dispatch(login(data)).unwrap();
-        //if (result.meta.requestStatus === "fulfilled") {
-        //    navigate("/"); // Redirect after successful login
-        //}
+    //delete data.confirmPassword;
+    try{ 
+      const result = await dispatch(createUser(data))
+        if (result.meta.requestStatus === "fulfilled") {
+           navigate("/login")
+        }
     } catch (error){
         console.log(error)
     }
@@ -59,8 +93,8 @@ export default function SignUp(props) {
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
+      <SignUpContainer direction="column" maxWidth="calc((1 - var(--template-frame-width, 0)) * 100dvw)">
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
-      <SignInContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
           <SitemarkIcon />
           <Typography
@@ -71,96 +105,146 @@ export default function SignUp(props) {
             Sign up
           </Typography>
           {error && <Alert severity="error">{error}</Alert>}
+          {message && <Alert severity="success">{`${message.email} has been successfully created`}</Alert>}
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmit)}
             noValidate
-            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+            sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 2 }}
           >
-            <FormControl>
-              <FormLabel htmlFor="firstName">First Name</FormLabel>
-              <TextField
-                {...register("firstName")}
-                autoComplete="firstName"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                placeholder="Raymart"
-                error={!!errors.firstName}
-                helperText={errors.firstName?.message}
-                color={!!errors.firstName ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="lastName">Last Name</FormLabel>
-              <TextField
-                {...register("lastName")}
-                autoComplete="lastName"
-                name="lastName"
-                required
-                fullWidth
-                id="lastName"
-                placeholder="Villena"
-                error={!!errors.lastName}
-                helperText={errors.lastName?.message}
-                color={!!errors.lastName ? 'error' : 'primary'}
-                />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="email">Email</FormLabel>
-              <TextField
-                {...register("email")}
-                required
-                fullWidth
-                id="email"
-                placeholder="your@email.com"
-                name="email"
-                autoComplete="email"
-                variant="outlined"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                color={errors.email ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <TextField
-                {...register("password")}
-                required
-                fullWidth
-                name="password"
-                placeholder="••••••••"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                variant="outlined"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                color={errors.password ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="confirmPassword"> Re-enter Password</FormLabel>
-              <TextField
-                {...register("confirmPassword")}
-                required
-                fullWidth
-                name="confirmPassword"
-                placeholder="••••••••"
-                type="password"
-                id="confirmPassword"
-                autoComplete="new-password"
-                variant="outlined"
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword?.message}
-                color={errors.confirmPassword ? 'error' : 'primary'}
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="allowExtraEmails" color="primary" />}
-              label="I want to receive updates via email."
-            />
+            <Grid container spacing={2} columns={12}>
+              {/* firstName Field */}
+              <Grid size={{xs:12, sm:6}}>
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="firstName">First Name</FormLabel>
+                    <TextField
+                      {...register("firstName")}
+                      autoComplete="given-name"
+                      name="firstName"
+                      required
+                      fullWidth
+                      id="firstName"
+                      placeholder="Raymart"
+                      error={!!errors.firstName}
+                      helperText={errors.firstName?.message}
+                      color={!!errors.firstName ? 'error' : 'primary'}
+                    />
+                </FormControl>
+              </Grid>
+              {/*lastName field */}
+              <Grid size={{xs:12, sm:6}}>
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="lastName">Last Name</FormLabel>
+                    <TextField
+                      {...register("lastName")}
+                      autoComplete="family-name"
+                      name="lastName"
+                      required
+                      fullWidth
+                      id="lastName"
+                      placeholder="Villena"
+                      error={!!errors.lastName}
+                      helperText={errors.lastName?.message}
+                      color={!!errors.lastName ? 'error' : 'primary'}
+                      />
+                </FormControl>
+              </Grid>
+              {/* Email Field */}
+              <Grid size={{xs:12, sm:12}}>
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                    <TextField
+                      {...register("email")}
+                      required
+                      fullWidth
+                      id="email"
+                      placeholder="your@email.com"
+                      name="email"
+                      autoComplete="email"
+                      variant="outlined"
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                      color={errors.email ? 'error' : 'primary'}
+                    />
+                </FormControl>
+              </Grid>
+              {/*mobile number field */}
+              <Grid size={{xs:12, sm:6}}>
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="mobileNo">Mobile Number</FormLabel>
+                    <TextField
+                      {...register("mobileNo")}
+                      autoComplete="phone"
+                      name="mobileNo"
+                      required
+                      fullWidth
+                      id="mobileNo"
+                      placeholder="09123456789"
+                      error={!!errors.mobileNo}
+                      helperText={errors.mobileNo?.message}
+                      color={!!errors.mobileNo ? 'error' : 'primary'}
+                      />
+                </FormControl>
+              </Grid>
+              {/*Office field */}
+              <Grid size={{xs:12, sm:6}}>
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="office">Office/Unit</FormLabel>
+                    <TextField
+                      {...register("office")}
+                      autoComplete="office"
+                      name="office"
+                      required
+                      fullWidth
+                      id="office"
+                      placeholder="NBERIC"
+                      error={!!errors.office}
+                      helperText={errors.office?.message}
+                      color={!!errors.office ? 'error' : 'primary'}
+                      />
+                </FormControl>
+              </Grid>
+              {/* Password */}
+              <Grid size={{xs:12, sm:6}}>
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                    <TextField
+                      {...register("password")}
+                      required
+                      fullWidth
+                      name="password"
+                      placeholder="••••••••"
+                      type="password"
+                      id="password"
+                      autoComplete="new-password"
+                      variant="outlined"
+                      error={!!errors.password}
+                      helperText={errors.password?.message}
+                      color={errors.password ? 'error' : 'primary'}
+                    />
+                </FormControl>
+              </Grid>
+              {/* Reenter password */}
+              <Grid size={{xs:12, sm:6}}>
+                <FormControl fullWidth>
+                  <FormLabel htmlFor="confirmPassword"> Re-enter Password</FormLabel>
+                    <TextField
+                      {...register("confirmPassword")}
+                      required
+                      fullWidth
+                      name="confirmPassword"
+                      placeholder="••••••••"
+                      type="password"
+                      id="confirmPassword"
+                      autoComplete="new-password"
+                      variant="outlined"
+                      error={!!errors.confirmPassword}
+                      helperText={errors.confirmPassword?.message}
+                      color={errors.confirmPassword ? 'error' : 'primary'}
+                    />
+                </FormControl>
+              </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth
@@ -202,7 +286,7 @@ export default function SignUp(props) {
             </Typography>
           </Box>
         </Card>
-      </SignInContainer>
+      </SignUpContainer>
     </AppTheme>
   );
 }

@@ -1,27 +1,70 @@
-import React from "react";
-import { Box } from "@mui/material";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import * as React from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
+import Navigator from '../components/headers/Navigator';
+import Header from '../components/headers/Header';
+import { useTheme } from '@mui/material/styles';
 
+function Copyright() {
+  return (
+    <Typography variant="body2" align="center" sx={{ color: 'text.secondary' }}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}.
+    </Typography>
+  );
+}
 
-const drawerWidth = 240; // Width of the sidebar
+const drawerWidth = 256;
 
 const AdminLayout = ({ children }) => {
-  return (
-    <Box sx={{ display: "flex" }}>
-      {/* Sidebar */}
-        <Sidebar />
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const theme = useTheme();
+  const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
 
-      {/* Main Content Area */}
-      <Box sx={{ flexGrow: 1, ml: `${drawerWidth}px`, width: `calc(100% - ${drawerWidth}px)` }}>
-        {/* Navbar */}
-        <Navbar />
-        
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  return (
+    <Box sx={{ display: 'flex', minHeight: '100vh', width:'100vw' }}>
+
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      >
+        {isSmUp ? null : (
+          <Navigator
+            PaperProps={{ style: { width: drawerWidth } }}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+          />
+        )}
+        <Navigator
+          PaperProps={{ style: { width: drawerWidth } }}
+          sx={{ display: { sm: 'block', xs: 'none' } }}
+        />
+      </Box>
+
+      <Box sx={{ flexGrow:1, display: 'flex', flexDirection: 'column', overflow: 'hidden'}}>
+        <Header onDrawerToggle={handleDrawerToggle} />
         {/* Page Content */}
-        <Box sx={{ p: 3 }}>{children}</Box>
+        <Box component="main" sx={{ flexGrow: 1, py: 6, px: 4, bgcolor: '#eaeff1', overflow: 'auto'}}>
+          {children}
+        </Box>
+        <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1',width: '100%' }}>
+          <Copyright />
+        </Box>
       </Box>
     </Box>
-  );
-};
 
-export default AdminLayout;
+  );
+}
+
+export default AdminLayout

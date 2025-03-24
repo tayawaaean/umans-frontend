@@ -1,7 +1,7 @@
 import React,{ useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { validateTokens } from '../store/slices/authSlice';
+import { validateTokens } from '../../store/slices/authSlice';
 
 const ProtectedRoute = ({ children, allowedRoles  }) => {
   const dispatch = useDispatch();
@@ -9,14 +9,12 @@ const ProtectedRoute = ({ children, allowedRoles  }) => {
 
   useEffect(() => {
     if (once){
-      console.log("is auth getting run at APP component")
       dispatch(validateTokens());
       once = false
     }
   }, [dispatch]);
 
   const { user, isAuthenticated } = useSelector((state) => state.auth);
-  console.log("protected route accessToken", isAuthenticated)
   
   //redirect if user is not authenticated
   if (!isAuthenticated){

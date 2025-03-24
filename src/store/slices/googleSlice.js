@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import googleApi from "../../api/authApi";
+import googleApi from "../../api/googleApi";
 
 export const callback = createAsyncThunk("auth/google/callback", async (code, { rejectWithValue }) => {
     try {

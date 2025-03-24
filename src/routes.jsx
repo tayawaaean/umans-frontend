@@ -1,12 +1,10 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import AdminLayout from "./layouts/AdminLayout";
-import Login from "./pages/Auth/Login";
 import SignIn from './pages/Auth/SignIn'
 import SignUp from "./pages/Auth/SignUp";
-import ProtectedRoute from "./components/ProtectedRoute"; // Protect routes
-import Paperbase from "./components/Paperbase";
+import ProtectedRoute from "./components/headers/ProtectedRoute"; // Protect routes
+import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 
 const AppRoutes = () => {
   return (
@@ -19,8 +17,7 @@ const AppRoutes = () => {
         {/* */}
         <Route path = "/" element={
           <ProtectedRoute allowedRoles={["user", "admin"]}>
-            {/*<AdminLayout><AdminDashboard /></AdminLayout>*/}
-            <Paperbase />
+            <AdminLayout><AdminDashboard /></AdminLayout>
           </ProtectedRoute>}>
         </Route>
         {/* insert other routes here*/}

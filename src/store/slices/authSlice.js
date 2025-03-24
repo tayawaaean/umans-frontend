@@ -5,7 +5,6 @@ import authApi from "../../api/authApi";
 export const login = createAsyncThunk("auth/superLogin", async (credentials, { rejectWithValue }) => {
     try {
         const response = await authApi.login(credentials);
-        console.log(response)
         return response.data; // Expecting { accessToken, user }
     } catch (error) {
         if(error.response.data.errors){
@@ -20,7 +19,6 @@ export const login = createAsyncThunk("auth/superLogin", async (credentials, { r
 export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValue }) => {
     try {
         await authApi.logout();
-        console.log("logout function getting run at slice")
         return null;
     } catch (error) {
         return rejectWithValue(error.response?.data?.msg || "Logout failed");
@@ -32,8 +30,6 @@ export const logout = createAsyncThunk("auth/logout", async (_, { rejectWithValu
 export const validateTokens = createAsyncThunk("auth/isAuthenticated", async (_, { rejectWithValue }) => {
     try {
         const response = await authApi.isAuthenticated();
-        console.log("isAuth function getting run at slice")
-        console.log("response at is auth fucntion", response)
         return response.data;
     } catch (error) {
         if(error.response.data.errors){

@@ -13,7 +13,7 @@ import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../components/CustomI
 
 //google imports
 import { googleLogin, callback } from "../../store/slices/googleSlice"; // Update with actual path
-import { googleApi } from "../../api/authApi" 
+import  googleApi from "../../api/googleApi" 
 import { useGoogleLogin } from "@react-oauth/google";
 
 //import react/redux components
@@ -76,6 +76,7 @@ export default function SignIn(props) {
   
   const [open, setOpen] = React.useState(false);
   const { user, loading, error } = useSelector((state) => state.auth);
+  const {message } = useSelector((state) => state.users);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -165,6 +166,7 @@ export default function SignIn(props) {
           >
             Sign in
           </Typography>
+          {message && <Alert severity="success">{`${message.email} has been successfully created`}</Alert>}
           {error && <Alert severity="error">{error}</Alert>}
           <Box
             component="form"
