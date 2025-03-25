@@ -5,6 +5,7 @@ import SignIn from './pages/Auth/SignIn'
 import SignUp from "./pages/Auth/SignUp";
 import ProtectedRoute from "./components/headers/ProtectedRoute"; // Protect routes
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
+import Apps from "./pages/Dashboard/Apps";
 
 const AppRoutes = () => {
   return (
@@ -15,10 +16,16 @@ const AppRoutes = () => {
         <Route path="/register" element={<SignUp />} />
 
         {/* */}
-        <Route path = "/" element={
-          <ProtectedRoute allowedRoles={["user", "admin"]}>
-            <AdminLayout><AdminDashboard /></AdminLayout>
-          </ProtectedRoute>}>
+        <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
+          <Route element={<AdminLayout />}>
+            <Route path = "/" element={<AdminDashboard />}/>
+            <Route path = "/apps" element={<Apps />}/>
+            <Route path = "/roles" element={<AdminDashboard />}/>
+            <Route path = "/usertypes" element={<AdminDashboard />}/>
+            <Route path = "/googleaccounts" element={<AdminDashboard />}/>
+            <Route path = "/sessions" element={<AdminDashboard />}/>
+            <Route path = "/about" element={<SignIn />}/>
+          </Route>
         </Route>
         {/* insert other routes here*/}
 

@@ -7,6 +7,7 @@ import Link from '@mui/material/Link';
 import Navigator from '../components/headers/Navigator';
 import Header from '../components/headers/Header';
 import { useTheme } from '@mui/material/styles';
+import { Outlet } from "react-router-dom";
 
 function Copyright() {
   return (
@@ -56,7 +57,7 @@ const AdminLayout = ({ children }) => {
         <Header onDrawerToggle={handleDrawerToggle} />
         {/* Page Content */}
         <Box component="main" sx={{ flexGrow: 1, py: 6, px: 4, bgcolor: '#eaeff1', overflow: 'auto'}}>
-          {children}
+          <Outlet />
         </Box>
         <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1',width: '100%' }}>
           <Copyright />

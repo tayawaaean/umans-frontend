@@ -17,19 +17,20 @@ import UsersTable from "../../components/tables/UsersTable";
 
 import { getUsers } from '../../store/slices/usersSlice';
 
-export default function AdminDashboard() {
+export default function Apps() {
   const { users, loading, error } = useSelector((state) => state.users);
   const dispatch = useDispatch();
 
   
   useEffect(() => {
     if (users[0] === 'empty') {
+      
       dispatch(getUsers());
     }
   }
   ,[]);
-
-  console.log("Log from Users component");
+  
+  console.log("Log from APPS component");
   return (
     <Paper sx={{ maxWidth: '95%', margin: 'auto', overflow: 'hidden' ,height: '100%'}}>
       <AppBar
@@ -56,7 +57,7 @@ export default function AdminDashboard() {
             </Grid>
             <Grid item>
               <Button variant="contained" sx={{ mr: 1 }}>
-                Add user
+                Add App
               </Button>
               <Tooltip title="Reload">
                 <IconButton>

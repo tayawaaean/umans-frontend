@@ -1,5 +1,5 @@
 import React,{ useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { validateTokens } from '../../store/slices/authSlice';
 
@@ -25,7 +25,7 @@ const ProtectedRoute = ({ children, allowedRoles  }) => {
     return <Navigate to="/unauthorized" replace />;
   }
 
-  return children
+  return <Outlet />
 };
 
 export default ProtectedRoute;

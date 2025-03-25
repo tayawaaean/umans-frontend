@@ -27,8 +27,10 @@ function Header(props) {
   const handleLogout = () => {
     dispatch(logout());
   };
-
+  
+  console.log('rendering HEADER')
   return (
+    
     <React.Fragment>
       <AppBar color="primary" position="sticky" elevation={0}>
         <Toolbar>
