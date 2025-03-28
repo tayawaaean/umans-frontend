@@ -1,5 +1,5 @@
 //import mui components
-import { Divider, FormLabel, FormControl, TextField, Button, Checkbox, Typography, Box, Alert } from "@mui/material";
+import { Divider, FormLabel, FormControl, TextField, Button, Checkbox, Typography, Box, Alert, CircularProgress } from "@mui/material";
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Link from '@mui/material/Link';
@@ -28,6 +28,7 @@ import { login } from "../../store/slices/authSlice";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "../../utils/validationSchema";
+import LoadingScreen from "../../components/LoadingScreen";
 
 export const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -152,9 +153,11 @@ export default function SignIn(props) {
     }
   };
 
+  console.log("Is there a user?", user, loading)
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />
+      {loading? <LoadingScreen caption='Loading...' /> : (
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
@@ -166,8 +169,6 @@ export default function SignIn(props) {
           >
             Sign in
           </Typography>
-          {message && <Alert severity="success">{`${message.email} has been successfully created`}</Alert>}
-          {error && <Alert severity="error">{error}</Alert>}
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmit)}
@@ -269,6 +270,7 @@ export default function SignIn(props) {
           </Box>
         </Card>
       </SignInContainer>
+      )}
     </AppTheme>
   );
 }

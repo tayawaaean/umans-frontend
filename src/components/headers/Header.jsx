@@ -28,7 +28,6 @@ function Header(props) {
     dispatch(logout());
   };
   
-  console.log('rendering HEADER')
   return (
     
     <React.Fragment>

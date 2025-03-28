@@ -1,25 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import usersApi from "../../api/usersApi";
+import appsApi from "../../api/appsApi";
 
-// Async action to handle getting users
-export const getUsers = createAsyncThunk("users/getUsers", async (_, { rejectWithValue }) => {
+// Async action to handle getting apps
+export const getApps = createAsyncThunk("apps/getApps", async (_, { rejectWithValue }) => {
   try {
-      const response = await usersApi.getUsers();
+      const response = await appsApi.getApps();
       console.log("from slice: ",response.data)
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
           const eachError = error.response.data.errors.map(err => err.msg).join(", ")
-          return rejectWithValue(eachError || "Getting users failed");
+          return rejectWithValue(eachError || "Getting apps failed");
       }
-      return rejectWithValue(error.response?.data?.msg || "Getting users failed");
+      return rejectWithValue(error.response?.data?.msg || "Getting apps failed");
   }
 });
 
-// Async action to handle getting users
-export const createUser = createAsyncThunk("auth/createUser", async (newUser, { rejectWithValue }) => {
+// Async action to handle getting apps
+export const createApp = createAsyncThunk("auth/addApp", async (newApp, { rejectWithValue }) => {
   try {
-      const response = await usersApi.createUser(newUser);
+      const response = await appsApi.createApp(newApp);
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
@@ -30,10 +30,10 @@ export const createUser = createAsyncThunk("auth/createUser", async (newUser, { 
   }
 });
 
-// Async action to handle getting users
-export const updateUser = createAsyncThunk("users/updateUser", async ({id, data}, { rejectWithValue }) => {
+// Async action to handle getting apps
+export const updateApp = createAsyncThunk("apps/updateApp", async ({id, data}, { rejectWithValue }) => {
   try {
-      const response = await usersApi.updateUser(id, data);
+      const response = await appsApi.updateApp(id, data);
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
@@ -45,17 +45,15 @@ export const updateUser = createAsyncThunk("users/updateUser", async ({id, data}
 });
 
 const initialState = {
-  users:  ['empty'],
-  admins: ['empty'],
-  types: ['empty'],
+  apps:  ['empty'],
   loading: false,
   error: null,
   message: null,
   snackbar: { open: false, message: "", severity: "info" }, // Snackbar state
 };
 
-const usersSlice = createSlice({
-  name: "users",
+const appsSlice = createSlice({
+  name: "apps",
   initialState,
   reducers: {
     closeSnackbar: (state) => {
@@ -64,53 +62,54 @@ const usersSlice = createSlice({
   },
   extraReducers: (builder) => {
       builder
-          .addCase(getUsers.pending, (state) => {
+          .addCase(getApps.pending, (state) => {
             state.loading = true;
             state.error = null;
             state.message = null;
           })
-          .addCase(getUsers.fulfilled, (state, action) => {
-            state.users = action.payload;
+          .addCase(getApps.fulfilled, (state, action) => {
+            state.apps = action.payload;
             state.loading = false;
             state.snackbar = { open: true, message: "User loaded successfully!", severity: "success" };
-            state.message = "Users loaded successfully";
+            state.message = "apps loaded successfully";
           })
-          .addCase(getUsers.rejected, (state, action) => {
+          .addCase(getApps.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            state.snackbar = { open: true, message: "Error on loading users!", severity: "error" };
+            state.snackbar = { open: true, message: "Error on loading apps!", severity: "error" };
           })
-          .addCase(createUser.pending, (state) => {
+          .addCase(createApp.pending, (state) => {
             state.loading = true;
             state.error = null;
             state.message = null;
           })
-          .addCase(createUser.fulfilled, (state, action) => {
+          .addCase(createApp.fulfilled, (state, action) => {
             state.loading = false;
-            state.users.push(action.payload);
-            state.snackbar = { open: true, message: `${action.payload.email} was added successfully`, severity: "success" };
+            state.apps.push(action.payload);
+            state.snackbar = { open: true, message: `${action.payload.name} was added successfully`, severity: "success" };
           })
-          .addCase(createUser.rejected, (state, action) => {
+          .addCase(createApp.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(updateUser.pending, (state) => {
+          .addCase(updateApp.pending, (state) => {
+            state.loading = true;
             state.error = null;
             state.message = null;
           })
-          .addCase(updateUser.fulfilled, (state, action) => {
+          .addCase(updateApp.fulfilled, (state, action) => {
             state.loading = false;
-            state.users = state.users.map((user) =>
+            state.apps = state.apps.map((user) =>
               user.id === action.payload.id ? action.payload : user
             );
             state.snackbar = { open: true, message: "User was updated successfully!", severity: "success" };
           })
-          .addCase(updateUser.rejected, (state, action) => {
+          .addCase(updateApp.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
             state.snackbar = { open: true, message: "Something went wrong updating the user!", severity: "success" };
           })
   },
 });
-export const { closeSnackbar } = usersSlice.actions;
-export default usersSlice.reducer;
+export const { closeSnackbar } = appsSlice.actions;
+export default appsSlice.reducer;

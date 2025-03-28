@@ -8,6 +8,7 @@ import theme from "./styles/theme";
 import './index.css'
 import App from './App.jsx'
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import AlertSnackbar from './components/AlertSnackbar.jsx';
 
 
 createRoot(document.getElementById('root')).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <AlertSnackbar />
           <App />
         </ThemeProvider>
       </Provider>

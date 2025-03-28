@@ -91,6 +91,10 @@ const authSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+            .addCase(refreshAccessToken.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(refreshAccessToken.fulfilled, (state, action) => {
                 state.accessToken = action.payload.accessToken;
                 state.isAuthenticated = true;
@@ -99,6 +103,10 @@ const authSlice = createSlice({
             .addCase(refreshAccessToken.rejected, (state) => {
                 state.accessToken = null;
                 state.isAuthenticated = false;
+            })
+            .addCase(validateTokens.pending, (state) => {
+                state.loading = true;
+                state.error = null;
             })
             .addCase(validateTokens.fulfilled, (state) => {
                 state.isAuthenticated = true;

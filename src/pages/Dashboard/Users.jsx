@@ -16,10 +16,10 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 //custom Table for users
-import AppsTable from "../../components/tables/AppsTable";
+import UsersTable from "../../components/tables/UsersTable";
 
 //functions to dispatch actions
-import { getApps, createApp } from '../../store/slices/appsSlice';
+import { getUsers, createUser } from '../../store/slices/usersSlice';
 
 //Custom loading screen
 import LoadingScreen from "../../components/LoadingScreen";
@@ -28,29 +28,29 @@ import LoadingScreen from "../../components/LoadingScreen";
 import AddUserDialog from "../../components/dialogs/AddUserDialog";
 
 
-export default function Apps() {
-  const {apps, loading } = useSelector((state) => state.apps);
+export default function Users() {
+  const {users, loading } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (apps[0] === 'empty') {
-      dispatch(getApps());
+    if (users[0] === 'empty') {
+      dispatch(getUsers());
     }
   }
-  ,[apps]);
+  ,[users]);
 
-  // Filter Apps based on firstName, lastName, or email
-  const filteredApps = apps.filter((app) =>
-    `${app.name} ${app.url} ${app.ownerOffice} ${app.email} ${app.mobileNumber}`
+  // Filter users based on firstName, lastName, or email
+  const filteredUsers = users.filter((user) =>
+    `${user.firstName} ${user.lastName} ${user.email} ${user.role} ${user.office} ${user.mobileNo} `
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
 
-  //reload Apps
+  //reload users
   const handleReload = () => {
-    dispatch(getApps());
+    dispatch(getUsers());
     setSearchTerm("");  // Clear the search term
   }
 
@@ -64,15 +64,15 @@ export default function Apps() {
 
 
   //add user function
-  const handleAddApp = (appData) => {
-    dispatch(createApp(appData)); // Dispatch the action to add a user
+  const handleAddUser = (userData) => {
+    dispatch(createUser(userData)); // Dispatch the action to add a user
     handleClose(); // Close the dialog
   };
 
 
   return (
     <div>
-      {loading || apps[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
+      {loading || users[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
         <Paper sx={{ maxWidth: '95%', margin: 'auto', overflow: 'hidden' ,height: '100%'}}>
           <AppBar
             position="static"
@@ -96,9 +96,9 @@ export default function Apps() {
                 </Grid>
                 <Grid item>
                   <Button variant="contained" onClick={handleOpen} sx={{ mr: 1 }}>
-                    Add New App
+                    Add user
                   </Button>
-                  <AddUserDialog open={open} handleClose={handleClose} onSubmit={handleAddApp} />
+                  <AddUserDialog open={open} handleClose={handleClose} onSubmit={handleAddUser} />
                   <Tooltip title="Reload">
                     <IconButton onClick={handleReload}> 
                       <RefreshIcon color="inherit" sx={{ display: 'block' }} />
@@ -108,7 +108,7 @@ export default function Apps() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <AppsTable apps = {filteredApps} />
+          <UsersTable users = {filteredUsers} />
         </Paper>
       )}
     </div>

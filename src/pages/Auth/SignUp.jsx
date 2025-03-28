@@ -105,7 +105,6 @@ export default function SignUp(props) {
             Sign up
           </Typography>
           {error && <Alert severity="error">{error}</Alert>}
-          {message && <Alert severity="success">{`${message.email} has been successfully created`}</Alert>}
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmit)}

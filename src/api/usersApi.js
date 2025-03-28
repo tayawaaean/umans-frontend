@@ -5,7 +5,7 @@ const usersApi = {
     createUser: (newUser) => axiosInstance.post("/auth/register", newUser),
     getUsers: () => axiosInstance.get("/users/"),
     getUserbyEmail: (email) => axiosInstance.get("/users/",email),
-    updateUser: (id) => axiosInstance.put("/users/", id),
+    updateUser: (id, data) => axiosInstance.put(`/users/${id}`, data),
     changePassword: () => axiosInstance.post("/users/passwd-change"),
     deleteUser: (id) => axiosInstance.delete("/users/",id),
   };

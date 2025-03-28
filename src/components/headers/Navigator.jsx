@@ -17,8 +17,13 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
+import ListIcon from '@mui/icons-material/List';
+import GoogleIcon from '@mui/icons-material/Google';
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import WorkIcon from '@mui/icons-material/Work';
 
-import { useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 
 const categories = [
   {
@@ -28,25 +33,25 @@ const categories = [
         id: 'Users',
         icon: <PeopleIcon />,
         path:'/',
-        active: true,
       },
       { id: 'Apps', icon: <DnsRoundedIcon />, path:'/apps' },
-      { id: 'Roles', icon: <PermMediaOutlinedIcon />, path:'/apps' },
-      { id: 'User Types', icon: <PublicIcon />, path:'/apps' },
-      { id: 'Google Accounts', icon: <SettingsEthernetIcon />, path:'/apps' },
+      { id: 'Roles', icon: <WorkIcon />, path:'/roles' },
+      { id: 'User Types', icon: <SupervisedUserCircleIcon />, path:'/userTypes' },
+      { id: 'Google Accounts', icon: <GoogleIcon />, path:'/googleAccounts' },
       {
-        id: 'Authenticated',
+        id: 'Active Sessions',
         icon: <SettingsInputComponentIcon />,
-        path:'/apps'
+        path:'/sessions'
       },
     ],
   },
   {
-    id: 'Quality',
+    id: 'Me',
     children: [
-      { id: 'Analytics', icon: <SettingsIcon />, path:'/apps' },
-      { id: 'Performance', icon: <TimerIcon /> , path:'/apps'},
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon />, path:'/apps' },
+      { id: 'About', icon: <PublicIcon />, path:'/about' },
+      { id: 'Contact', icon: <ContactPhoneIcon /> , path:'/contact'},
+      { id: 'Logs', icon: <ListIcon />, path:'/logs' },
+      { id: 'Advance', icon: <PhonelinkSetupIcon />, path:'/settings' },
     ],
   },
 ];
@@ -57,7 +62,9 @@ const item = {
   color: 'rgba(255, 255, 255, 0.7)',
   '&:hover, &:focus': {
     bgcolor: 'rgba(255, 255, 255, 0.08)',
+  //"&.active": { backgroundColor: "rgba(174, 174, 174, 0.71)" }
   },
+  
 };
 
 const itemCategory = {
@@ -70,11 +77,8 @@ const itemCategory = {
 
 export default function Navigator(props) {
   const { ...other } = props;
-  const navigate = useNavigate();
+  const location = useLocation(); // Get current URL path
 
-  const handleButton = (textbutton) => {
-    alert(`List item clicked! ${textbutton}`);
-  }
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
@@ -92,9 +96,9 @@ export default function Navigator(props) {
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, path, active }) => (
+            {children.map(({ id: childId, icon, path }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton component={NavLink} to={path} selected={active} sx={item}>
+                <ListItemButton component={NavLink} to={path} selected={location.pathname === path} sx={item}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

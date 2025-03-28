@@ -4,7 +4,7 @@ import AdminLayout from "./layouts/AdminLayout";
 import SignIn from './pages/Auth/SignIn'
 import SignUp from "./pages/Auth/SignUp";
 import ProtectedRoute from "./components/headers/ProtectedRoute"; // Protect routes
-import AdminDashboard from "./pages/Dashboard/AdminDashboard";
+import Users from "./pages/Dashboard/Users";
 import Apps from "./pages/Dashboard/Apps";
 
 const AppRoutes = () => {
@@ -18,12 +18,12 @@ const AppRoutes = () => {
         {/* */}
         <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
           <Route element={<AdminLayout />}>
-            <Route path = "/" element={<AdminDashboard />}/>
+            <Route path = "/" element={<Users />}/>
             <Route path = "/apps" element={<Apps />}/>
-            <Route path = "/roles" element={<AdminDashboard />}/>
-            <Route path = "/usertypes" element={<AdminDashboard />}/>
-            <Route path = "/googleaccounts" element={<AdminDashboard />}/>
-            <Route path = "/sessions" element={<AdminDashboard />}/>
+            <Route path = "/roles" element={<Users />}/>
+            <Route path = "/usertypes" element={<Users />}/>
+            <Route path = "/googleaccounts" element={<Users />}/>
+            <Route path = "/sessions" element={<Users />}/>
             <Route path = "/about" element={<SignIn />}/>
           </Route>
         </Route>
