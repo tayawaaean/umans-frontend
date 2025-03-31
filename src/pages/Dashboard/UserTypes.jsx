@@ -16,10 +16,10 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 //custom Table for users
-import AppsTable from "../../components/tables/AppsTable";
+import UserTypesTable from "../../components/tables/UserTypesTable";
 
 //functions to dispatch actions
-import { getApps, createApp } from '../../store/slices/appsSlice';
+import { getUserTypes, addUserType } from '../../store/slices/userTypesSlice';
 
 //Custom loading screen
 import LoadingScreen from "../../components/LoadingScreen";
@@ -29,29 +29,29 @@ import LoadingScreen from "../../components/LoadingScreen";
 import AddAppDialog from "../../components/dialogs/AddAppDialog";
 
 
-export default function Apps() {
-  const {apps, loading } = useSelector((state) => state.apps);
+export default function UserTypes() {
+  const {userTypes, loading } = useSelector((state) => state.userTypes);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    if (apps[0] === 'empty') {
-      dispatch(getApps());
+    if (userTypes[0] === 'empty') {
+      dispatch(getUserTypes());
     }
   }
-  ,[apps]);
+  ,[userTypes]);
 
-  // Filter Apps based on firstName, lastName, or email
-  const filteredApps = apps.filter((app) =>
-    `${app.name} ${app.url} ${app.ownerOffice} ${app.email} ${app.mobileNumber}`
+  // Filter userTypes based on firstName, lastName, or email
+  const filteredTypes = userTypes.filter((type) =>
+    `${type.userType}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
 
-  //reload Apps
+  //reload userTypes
   const handleReload = () => {
-    dispatch(getApps());
+    dispatch(getUserTypes());
     setSearchTerm("");  // Clear the search term
   }
 
@@ -65,15 +65,15 @@ export default function Apps() {
 
 
   //add user function
-  const handleAddApp = (appData) => {
-    dispatch(createApp(appData)); // Dispatch the action to add a user
+  const handleAddApp = (userTypeData) => {
+    dispatch(addUserType(userTypeData)); // Dispatch the action to add a user
     handleClose(); // Close the dialog
   };
 
 
   return (
     <div>
-      {loading || apps[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
+      {loading || userTypes[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
         <Paper sx={{ maxWidth: '95%', margin: 'auto', overflow: 'hidden' ,height: '100%'}}>
           <AppBar
             position="static"
@@ -97,7 +97,7 @@ export default function Apps() {
                 </Grid>
                 <Grid item>
                   <Button variant="contained" onClick={handleOpen} sx={{ mr: 1 }}>
-                    Add New App
+                    Add New UserType
                   </Button>
                   <AddAppDialog open={open} handleClose={handleClose} onSubmit={handleAddApp} />
                   <Tooltip title="Reload">
@@ -109,7 +109,7 @@ export default function Apps() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <AppsTable apps = {filteredApps} />
+          <UserTypesTable userTypes = {filteredTypes} />
         </Paper>
       )}
     </div>

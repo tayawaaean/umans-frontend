@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, IconButton, InputAdornment } from "@mui/material";
-import { Autorenew as GenerateIcon, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Autorenew as GenerateIcon, PersonAdd, Visibility, VisibilityOff } from "@mui/icons-material";
 
 //validation imports
 import { useForm } from "react-hook-form";
@@ -39,7 +39,9 @@ const AddUserDialog = ({ open, handleClose, onSubmit }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
-        <DialogTitle>Add New User</DialogTitle>
+        <DialogTitle>
+          <PersonAdd fontSize="small" style={{ marginRight: 5 }} />Add New User
+        </DialogTitle>
         <DialogContent>
             <TextField label="First Name" {...register("firstName")} fullWidth margin="dense" error={!!errors.firstName} helperText={errors.firstName?.message} />
             <TextField label="Last Name" {...register("lastName")} fullWidth margin="dense" error={!!errors.lastName} helperText={errors.lastName?.message} />

@@ -1,46 +1,58 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import usersApi from "../../api/usersApi";
+import { showSnackbar } from "./snackbarSlice"; // Import the snackbar action
+
 
 // Async action to handle getting users
-export const getUsers = createAsyncThunk("users/getUsers", async (_, { rejectWithValue }) => {
+export const getUsers = createAsyncThunk("users/getUsers", async (_, {dispatch, rejectWithValue }) => {
   try {
       const response = await usersApi.getUsers();
-      console.log("from slice: ",response.data)
+      dispatch(showSnackbar({ message: "Users loaded successfully!", severity: "info" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
-          const eachError = error.response.data.errors.map(err => err.msg).join(", ")
-          return rejectWithValue(eachError || "Getting users failed");
+          const eachError = error.response.data.errors.map(err => err.msg).join(", ") || "Getting users failed"
+          dispatch(showSnackbar({ message: eachError, severity: "error" }));
+          return rejectWithValue(eachError);
       }
-      return rejectWithValue(error.response?.data?.msg || "Getting users failed");
+      const message = error.response?.data?.msg || "Getting users failed"
+      dispatch(showSnackbar({ message: message, severity: "error" }));
+      return rejectWithValue(message);
   }
 });
 
 // Async action to handle getting users
-export const createUser = createAsyncThunk("auth/createUser", async (newUser, { rejectWithValue }) => {
+export const createUser = createAsyncThunk("auth/createUser", async (newUser, {dispatch, rejectWithValue }) => {
   try {
       const response = await usersApi.createUser(newUser);
+      dispatch(showSnackbar({ message: `${response.data.email} was added successfully`, severity: "success" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
         const eachError = error.response.data.errors.map(err => err.msg).join(", ")
         return rejectWithValue(eachError || "Signup failed");
       }
+      const message = error.response?.data?.msg || "Something went wrong"
+      dispatch(showSnackbar({ message: message, severity: "error" }));
       return rejectWithValue(error.response?.data?.msg || "Something went wrong");
   }
 });
 
 // Async action to handle getting users
-export const updateUser = createAsyncThunk("users/updateUser", async ({id, data}, { rejectWithValue }) => {
+export const updateUser = createAsyncThunk("users/updateUser", async ({id, data}, {dispatch, rejectWithValue }) => {
   try {
       const response = await usersApi.updateUser(id, data);
+      dispatch(showSnackbar({ message: "User was updated successfully!", severity: "info" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
-        const eachError = error.response.data.errors.map(err => err.msg).join(", ")
-        return rejectWithValue(eachError || "Signup failed");
+        const eachError = error.response.data.errors.map(err => err.msg).join(", ") || "Updating user failed"
+        dispatch(showSnackbar({ message: eachError, severity: "error" }));
+        return rejectWithValue(eachError);
       }
-      return rejectWithValue(error.response?.data?.msg || "Something went wrong");
+      const message = error.response?.data?.msg || "Something went wrong"
+      dispatch(showSnackbar({ message: message, severity: "error" }));
+      return rejectWithValue(message);
   }
 });
 
@@ -51,16 +63,12 @@ const initialState = {
   loading: false,
   error: null,
   message: null,
-  snackbar: { open: false, message: "", severity: "info" }, // Snackbar state
 };
 
 const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    closeSnackbar: (state) => {
-      state.snackbar.open = false;
-    },
   },
   extraReducers: (builder) => {
       builder
@@ -72,13 +80,11 @@ const usersSlice = createSlice({
           .addCase(getUsers.fulfilled, (state, action) => {
             state.users = action.payload;
             state.loading = false;
-            state.snackbar = { open: true, message: "User loaded successfully!", severity: "success" };
             state.message = "Users loaded successfully";
           })
           .addCase(getUsers.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            state.snackbar = { open: true, message: "Error on loading users!", severity: "error" };
           })
           .addCase(createUser.pending, (state) => {
             state.loading = true;
@@ -88,7 +94,6 @@ const usersSlice = createSlice({
           .addCase(createUser.fulfilled, (state, action) => {
             state.loading = false;
             state.users.push(action.payload);
-            state.snackbar = { open: true, message: `${action.payload.email} was added successfully`, severity: "success" };
           })
           .addCase(createUser.rejected, (state, action) => {
             state.loading = false;
@@ -103,12 +108,10 @@ const usersSlice = createSlice({
             state.users = state.users.map((user) =>
               user.id === action.payload.id ? action.payload : user
             );
-            state.snackbar = { open: true, message: "User was updated successfully!", severity: "success" };
           })
           .addCase(updateUser.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
-            state.snackbar = { open: true, message: "Something went wrong updating the user!", severity: "success" };
           })
   },
 });

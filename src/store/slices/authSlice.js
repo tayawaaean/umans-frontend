@@ -1,16 +1,20 @@
 import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
 import authApi from "../../api/authApi";
+import { showSnackbar } from "./snackbarSlice"; // Import the snackbar action
 
 // Async action to handle login
-export const login = createAsyncThunk("auth/superLogin", async (credentials, { rejectWithValue }) => {
+export const login = createAsyncThunk("auth/superLogin", async (credentials, {dispatch, rejectWithValue }) => {
     try {
         const response = await authApi.login(credentials);
         return response.data; // Expecting { accessToken, user }
     } catch (error) {
+        
         if(error.response.data.errors){
             const eachError = error.response.data.errors.map(err => err.msg)
+            dispatch(showSnackbar({ message: eachError || "Login failed", severity: "error" }));
             return rejectWithValue(eachError || "Login failed");
         }
+        dispatch(showSnackbar({ message: error.response?.data?.msg || "Login failed", severity: "error" }));
         return rejectWithValue(error.response?.data?.msg || "Login failed");
     }
 });

@@ -1,28 +1,30 @@
 import React from 'react'
 import {Snackbar, Alert } from '@mui/material/';
 import { useSelector, useDispatch } from "react-redux";
-import { closeSnackbar } from '../store/slices/usersSlice';
+import { hideSnackbar } from '../store/slices/snackbarSlice';
 
 const AlertSnackbar = () => {
-    const dispatch = useDispatch();
-    const { open, message, severity } = useSelector((state) => state.users.snackbar);
-    return (
-        <Snackbar 
-        open={open} 
-        autoHideDuration={3000} 
-        onClose={() => dispatch(closeSnackbar())}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-        >
-            <Alert
-                severity={severity}
-                onClose={() => dispatch(closeSnackbar())}
-                variant="filled"
-                sx={{boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.5)", borderRadius: "8px"}}
-            >
-                {message}
-            </Alert>
-        </Snackbar>
-    )
-}
+  const dispatch = useDispatch();
+  const { open, message, severity } = useSelector((state) => state.snackbar);
 
-export default AlertSnackbar
+  const handleClose = (_, reason) => {
+    if (reason !== "clickaway") {
+      dispatch(hideSnackbar());
+    }
+  };
+
+  return (
+    <Snackbar
+      open={open}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+    >
+      <Alert onClose={handleClose} severity={severity} variant="filled">
+        {message}
+      </Alert>
+    </Snackbar>
+  );
+};
+
+export default AlertSnackbar;

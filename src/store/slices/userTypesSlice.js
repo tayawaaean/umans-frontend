@@ -1,29 +1,29 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import appsApi from "../../api/appsApi";
+import userTypesApi from "../../api/userTypesApi";
 import { showSnackbar } from "./snackbarSlice"; // Import the snackbar action
 
-// Async action to handle getting apps
-export const getApps = createAsyncThunk("apps/getApps", async (_, {dispatch, rejectWithValue }) => {
+// Async action to handle getting userTypes
+export const getUserTypes = createAsyncThunk("userTypes/getUserTypes", async (_, {dispatch, rejectWithValue }) => {
   try {
-      const response = await appsApi.getApps();
-      dispatch(showSnackbar({ message: "Apps loaded successfully!", severity: "info" }));
+      const response = await userTypesApi.getUserTypes();
+      dispatch(showSnackbar({ message: "User Types loaded successfully!", severity: "info" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
-          const eachError = error.response.data.errors.map(err => err.msg).join(", ") || "Getting apps failed"
+          const eachError = error.response.data.errors.map(err => err.msg).join(", ") || "Getting userTypes failed"
           dispatch(showSnackbar({ message: eachError, severity: "error" }));
           return rejectWithValue(eachError );
       }
-      const message = error.response?.data?.msg || "Getting apps failed"
+      const message = error.response?.data?.msg || "Getting userTypes failed"
       dispatch(showSnackbar({ message: message, severity: "error" }));
       return rejectWithValue(message);
   }
 });
 
-// Async action to handle getting apps
-export const createApp = createAsyncThunk("auth/addApp", async (newApp, {dispatch, rejectWithValue }) => {
+// Async action to handle getting userTypes
+export const addUserType = createAsyncThunk("auth/addUserTypes", async (newApp, {dispatch, rejectWithValue }) => {
   try {
-      const response = await appsApi.createApp(newApp);
+      const response = await userTypesApi.addUserType(newApp);
       dispatch(showSnackbar({ message: `${response.data.name} was added successfully`, severity: "success" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
@@ -38,10 +38,10 @@ export const createApp = createAsyncThunk("auth/addApp", async (newApp, {dispatc
   }
 });
 
-// Async action to handle getting apps
-export const updateApp = createAsyncThunk("apps/updateApp", async ({id, data}, {dispatch, rejectWithValue }) => {
+// Async action to handle getting userTypes
+export const updateUserType = createAsyncThunk("userTypes/updateUserType", async ({id, data}, {dispatch, rejectWithValue }) => {
   try {
-      const response = await appsApi.updateApp(id, data);
+      const response = await userTypesApi.updateUserType(id, data);
       dispatch(showSnackbar({ message: "App was updated successfully!", severity: "info" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
@@ -57,56 +57,55 @@ export const updateApp = createAsyncThunk("apps/updateApp", async ({id, data}, {
 });
 
 const initialState = {
-  apps:  ['empty'],
+  userTypes:  ['empty'],
   loading: false,
   error: null,
-  message: null,
 };
 
-const appsSlice = createSlice({
-  name: "apps",
+const userTypesSlice = createSlice({
+  name: "userTypes",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
       builder
-          .addCase(getApps.pending, (state) => {
+          .addCase(getUserTypes.pending, (state) => {
             state.loading = true;
             state.error = null;
             state.message = null;
           })
-          .addCase(getApps.fulfilled, (state, action) => {
-            state.apps = action.payload;
+          .addCase(getUserTypes.fulfilled, (state, action) => {
+            state.userTypes = action.payload;
             state.loading = false;
 
           })
-          .addCase(getApps.rejected, (state, action) => {
+          .addCase(getUserTypes.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(createApp.pending, (state) => {
+          .addCase(addUserType.pending, (state) => {
             state.loading = true;
             state.error = null;
             state.message = null;
           })
-          .addCase(createApp.fulfilled, (state, action) => {
+          .addCase(addUserType.fulfilled, (state, action) => {
             state.loading = false;
-            state.apps.push(action.payload);
+            state.userTypes.push(action.payload);
           })
-          .addCase(createApp.rejected, (state, action) => {
+          .addCase(addUserType.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(updateApp.pending, (state) => {
+          .addCase(updateUserType.pending, (state) => {
             state.loading = true;
             state.error = null;
           })
-          .addCase(updateApp.fulfilled, (state, action) => {
+          .addCase(updateUserType.fulfilled, (state, action) => {
             state.loading = false;
-            state.apps = state.apps.map((app) =>
+            state.userTypes = state.userTypes.map((app) =>
               app.id === action.payload.id ? action.payload : app
             );
           })
-          .addCase(updateApp.rejected, (state, action) => {
+          .addCase(updateUserType.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
 
@@ -114,4 +113,4 @@ const appsSlice = createSlice({
   },
 });
 
-export default appsSlice.reducer;
+export default userTypesSlice.reducer;
