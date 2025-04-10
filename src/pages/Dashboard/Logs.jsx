@@ -16,63 +16,61 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 //custom Table for users
-import UserTypesTable from "../../components/tables/UserTypesTable";
+import LogsTable from "../../components/tables/LogsTable";
 
 //functions to dispatch actions
-import { getUserTypes, addUserType } from '../../store/slices/userTypesSlice';
-
+import { getLogs } from "../../api/logsApi";
+import { getUsers } from "../../store/slices/usersSlice";
 //Custom loading screen
 import LoadingScreen from "../../components/LoadingScreen";
 
-//custom dialog for adding an app
-import AddUserTypeDialog from "../../components/dialogs/AddUserTypeDialog";
+import { showSnackbar } from "../../store/slices/snackbarSlice";
 
 
-export default function UserTypes() {
-  const {userTypes, loading } = useSelector((state) => state.userTypes);
-  const dispatch = useDispatch();
+export default function Logs() {
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [open, setOpen] = useState(false);
+  const users = useSelector((state) => state.users.users);
+  const dispatch = useDispatch();
+  const [logs, setLogs] = useState(['empty']);
+  const [loading, setLoading] = useState(true);
+
+  const loadLogs = async () => {
+    try {
+      const data = await getLogs(50); // pass your limit here
+      dispatch(showSnackbar({ message: "Logs loaded successfully!", severity: "info" }));
+      setLogs(data);
+    } catch (err) {
+        dispatch(showSnackbar({ message: err, severity: "error" }));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (userTypes[0] === 'empty') {
-      dispatch(getUserTypes());
+    if (users[0] === 'empty') {
+        dispatch(getUsers());
     }
+    loadLogs();
   }
-  ,[userTypes]);
+  ,[]);
 
-  // Filter userTypes based on firstName, lastName, or email
-  const filteredTypes = userTypes.filter((type) =>
-    `${type.userType}`
+  // Filter Apps based on firstName, lastName, or email
+  const filteredLogs = logs.filter((log) =>
+    `${log.name} ${log.url} ${log.ownerOffice} ${log.email} ${log.mobileNumber}`
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
 
-  //reload userTypes
+  //reload logs
   const handleReload = () => {
-    dispatch(getUserTypes());
+    loadLogs();
     setSearchTerm("");  // Clear the search term
   }
 
-  //add user dialog open close functions
-  const handleOpen = () => {
-    setOpen(true);
-  } 
-  const handleClose = () => {
-    setOpen(false);
-  }
-
-
-  //add user function
-  const handleAddApp = (userTypeData) => {
-    dispatch(addUserType(userTypeData)); // Dispatch the action to add a user
-    handleClose(); // Close the dialog
-  };
-
-
   return (
     <div>
-      {loading || userTypes[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
+      {loading || logs[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
         <Paper sx={{ maxWidth: '95%', margin: 'auto', overflow: 'hidden' ,height: '100%'}}>
           <AppBar
             position="static"
@@ -95,10 +93,6 @@ export default function UserTypes() {
                   />
                 </Grid>
                 <Grid item>
-                  <Button variant="contained" onClick={handleOpen} sx={{ mr: 1 }}>
-                    Add New UserType
-                  </Button>
-                  <AddUserTypeDialog open={open} handleClose={handleClose} onSubmit={handleAddApp} />
                   <Tooltip title="Reload">
                     <IconButton onClick={handleReload}> 
                       <RefreshIcon color="inherit" sx={{ display: 'block' }} />
@@ -108,7 +102,7 @@ export default function UserTypes() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <UserTypesTable userTypes = {filteredTypes} />
+          <LogsTable logs = {filteredLogs} users={users} />
         </Paper>
       )}
     </div>

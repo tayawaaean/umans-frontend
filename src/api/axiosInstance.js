@@ -13,9 +13,10 @@ const axiosInstance = axios.create({
 // Request interceptor to attach access token
 axiosInstance.interceptors.request.use((config) => {
   const state = store.getState();
-  const accessToken = state.auth.accessToken;
+  const {user, accessToken} = state.auth;
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
+    config.headers['x-user-id'] = user.id
   }
   return config;
 });

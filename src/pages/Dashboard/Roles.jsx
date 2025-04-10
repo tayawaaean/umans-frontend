@@ -16,41 +16,60 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 
 
 //custom Table for users
-import UserTypesTable from "../../components/tables/UserTypesTable";
+import RolesTable from "../../components/tables/RolesTable";
 
 //functions to dispatch actions
-import { getUserTypes, addUserType } from '../../store/slices/userTypesSlice';
+import { getRoles, addRole } from '../../store/slices/rolesSlice';
+import { getApps } from "../../store/slices/appsSlice";
+import { getUsers } from "../../store/slices/usersSlice";
+import { getUserTypes } from "../../store/slices/userTypesSlice";
 
 //Custom loading screen
 import LoadingScreen from "../../components/LoadingScreen";
 
 //custom dialog for adding an app
-import AddUserTypeDialog from "../../components/dialogs/AddUserTypeDialog";
+
+import AddRoleDialog from "../../components/dialogs/AddRoleDialog";
 
 
-export default function UserTypes() {
-  const {userTypes, loading } = useSelector((state) => state.userTypes);
+export default function Roles() {
+    //redux states
+  const {roles, loading } = useSelector((state) => state.roles);
+  const users = useSelector((state) => state.users.users);
+  const apps = useSelector((state) => state.apps.apps);
+  const userTypes = useSelector((state) => state.userTypes.userTypes);
+
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
 
+  //mount functions
   useEffect(() => {
+    if (roles[0] === 'empty') {
+      dispatch(getRoles());
+    }
+    if (users[0] === 'empty') {
+        dispatch(getUsers());
+    }
+    if (apps[0] === 'empty') {
+        dispatch(getApps());
+    }
     if (userTypes[0] === 'empty') {
-      dispatch(getUserTypes());
+        dispatch(getUserTypes());
     }
   }
-  ,[userTypes]);
+  ,[roles, users, apps, userTypes]);
 
-  // Filter userTypes based on firstName, lastName, or email
-  const filteredTypes = userTypes.filter((type) =>
-    `${type.userType}`
+  // Filter roles based on firstName, lastName, or email
+  const filterRoles = roles.filter((role) =>
+    `${role.name} ${role.url} ${role.ownerOffice} ${role.userType}` //need to provide the right field since ids are being used
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
   );
 
-  //reload userTypes
+  //reload roles
   const handleReload = () => {
-    dispatch(getUserTypes());
+    dispatch(getRoles());
     setSearchTerm("");  // Clear the search term
   }
 
@@ -64,15 +83,15 @@ export default function UserTypes() {
 
 
   //add user function
-  const handleAddApp = (userTypeData) => {
-    dispatch(addUserType(userTypeData)); // Dispatch the action to add a user
+  const handleAddApp = (roleData) => {
+    dispatch(addRole(roleData)); // Dispatch the action to add a user
     handleClose(); // Close the dialog
   };
 
 
   return (
     <div>
-      {loading || userTypes[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
+      {loading || roles[0] === 'empty'? <LoadingScreen caption='Loading...' fullScreen={false} /> : (
         <Paper sx={{ maxWidth: '95%', margin: 'auto', overflow: 'hidden' ,height: '100%'}}>
           <AppBar
             position="static"
@@ -96,9 +115,9 @@ export default function UserTypes() {
                 </Grid>
                 <Grid item>
                   <Button variant="contained" onClick={handleOpen} sx={{ mr: 1 }}>
-                    Add New UserType
+                    Add New Role
                   </Button>
-                  <AddUserTypeDialog open={open} handleClose={handleClose} onSubmit={handleAddApp} />
+                  <AddRoleDialog open={open} handleClose={handleClose} onSubmit={handleAddApp} users={users} apps={apps} userTypes={userTypes}/>
                   <Tooltip title="Reload">
                     <IconButton onClick={handleReload}> 
                       <RefreshIcon color="inherit" sx={{ display: 'block' }} />
@@ -108,7 +127,7 @@ export default function UserTypes() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <UserTypesTable userTypes = {filteredTypes} />
+          <RolesTable roles = {filterRoles} users={users} apps={apps} userTypes={userTypes} />
         </Paper>
       )}
     </div>

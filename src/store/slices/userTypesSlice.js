@@ -24,7 +24,7 @@ export const getUserTypes = createAsyncThunk("userTypes/getUserTypes", async (_,
 export const addUserType = createAsyncThunk("auth/addUserTypes", async (newApp, {dispatch, rejectWithValue }) => {
   try {
       const response = await userTypesApi.addUserType(newApp);
-      dispatch(showSnackbar({ message: `${response.data.name} was added successfully`, severity: "success" }));
+      dispatch(showSnackbar({ message: `${response.data.userType} was added successfully`, severity: "success" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {
       if(error.response.data.errors){
@@ -41,7 +41,7 @@ export const addUserType = createAsyncThunk("auth/addUserTypes", async (newApp, 
 // Async action to handle getting userTypes
 export const updateUserType = createAsyncThunk("userTypes/updateUserType", async ({id, data}, {dispatch, rejectWithValue }) => {
   try {
-      const response = await userTypesApi.updateUserType(id, data);
+      const response = await userTypesApi.updateType(id, data);
       dispatch(showSnackbar({ message: "App was updated successfully!", severity: "info" }));
       return response.data; // Expecting { accessToken, user }
   } catch (error) {

@@ -4,8 +4,8 @@ import axiosInstance from './axiosInstance';
 const userTypesApi = {
     addUserType: (newType) => axiosInstance.post("/type", newType),
     getUserTypes: () => axiosInstance.get("/type"),
-    updateApp: (id, data) => axiosInstance.put(`/type/${id}`, data),
-    deleteApp: (id) => axiosInstance.delete(`/type/${id}`),
+    updateType: (id, data) => axiosInstance.put(`/type/${id}`, data),
+    deleteType: (id) => axiosInstance.delete(`/type/${id}`),
   };
 
 

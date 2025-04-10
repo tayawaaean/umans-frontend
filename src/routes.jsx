@@ -7,6 +7,9 @@ import ProtectedRoute from "./components/headers/ProtectedRoute"; // Protect rou
 import Users from "./pages/Dashboard/Users";
 import Apps from "./pages/Dashboard/Apps";
 import UserTypes from "./pages/Dashboard/UserTypes";
+import Roles from "./pages/Dashboard/Roles";
+import Sessions from "./pages/Dashboard/Sessions";
+import Logs from "./pages/Dashboard/Logs";
 
 const AppRoutes = () => {
   return (
@@ -21,11 +24,12 @@ const AppRoutes = () => {
           <Route element={<AdminLayout />}>
             <Route path = "/" element={<Users />}/>
             <Route path = "/apps" element={<Apps />}/>
-            <Route path = "/roles" element={<Users />}/>
+            <Route path = "/roles" element={<Roles />}/>
             <Route path = "/userTypes" element={<UserTypes />}/>
             <Route path = "/googleAccounts" element={<Users />}/>
-            <Route path = "/sessions" element={<Users />}/>
+            <Route path = "/sessions" element={<Sessions />}/>
             <Route path = "/about" element={<SignIn />}/>
+            <Route path = "/logs" element={<Logs />}/>
           </Route>
         </Route>
         {/* insert other routes here*/}

@@ -4,6 +4,8 @@ import usersReducer from './slices/usersSlice';
 import appsReducer from './slices/appsSlice';
 import snackbarReducer from './slices/snackbarSlice';
 import userTypesReducer from './slices/userTypesSlice';
+import rolesReducer from './slices/rolesSlice';
+import sessionsReducer from './slices/sessionsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     apps: appsReducer,
     snackbar: snackbarReducer,
     userTypes: userTypesReducer,
+    roles: rolesReducer,
+    sessions: sessionsReducer,
   },
 });
 
