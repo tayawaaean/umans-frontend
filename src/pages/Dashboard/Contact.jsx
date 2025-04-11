@@ -33,7 +33,7 @@ const Contact = () => {
         <Box display="flex" alignItems="center" mb={3}>
           <ContactMail color="primary" sx={{ mr: 1 }} />
           <Typography variant="h4" fontWeight="bold">
-            Contact Us
+            Contact Developer
           </Typography>
         </Box>
 
