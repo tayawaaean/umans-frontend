@@ -1,116 +1,193 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import HelpIcon from '@mui/icons-material/Help';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { useDispatch } from "react-redux";
-import { logout } from "../../store/slices/authSlice";
+import { 
+  AppBar, Avatar,Toolbar, Typography, IconButton, Menu, MenuItem,Button, Grid2, Tooltip, Link, Box
 
-const lightColor = 'rgba(255, 255, 255, 0.7)';
+} from '@mui/material';
+
+import MenuIcon from '@mui/icons-material/Menu';
+import { AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
+
+import { useDispatch,useSelector } from "react-redux";
+import { logout } from "../../store/slices/authSlice";
+import {useLocation, useNavigate  } from 'react-router-dom';
+
+import { styled, alpha } from '@mui/material/styles';
+
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
+
+const avatarURL=import.meta.env.VITE_IMAGE_SERVER_URL
+
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    marginLeft: theme.spacing(1),
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  width: '100%',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create('width'),
+    [theme.breakpoints.up('sm')]: {
+      width: '12ch',
+      '&:focus': {
+        width: '20ch',
+      },
+    },
+  },
+}));
+
+
+
 
 function Header(props) {
   const { onDrawerToggle } = props;
   const dispatch = useDispatch();
 
+  const location = useLocation();
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const avatar = useSelector((state) => state.auth.user.avatar) || null
+  const navigate = useNavigate();
+
+  // Dynamic title based on the current path
+  const getTitle = () => {
+    switch (location.pathname) {
+      case '/':
+        return 'Dashboard';
+      case '/users':
+        return 'Users';
+      case '/apps':
+        return 'Apps';
+      case '/roles':
+        return 'Roles';
+      case '/userTypes':
+        return 'User Types';
+      case '/googleAccounts':
+        return 'Google Accounts';
+      case '/sessions':
+        return 'Sessions';
+      case '/about':
+        return 'About';     
+      case '/contact':
+        return 'Contact';
+      case '/logs':
+        return 'Logs';
+      default:
+        return 'Dashboard';
+    }
+  };
 
   const handleLogout = () => {
+    handleClose();
     dispatch(logout());
+    navigate('/login');
   };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget); // Open the menu
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null); // Close the menu
+  };
+
+  const handleProfile = () => {
+    handleClose();
+    navigate('/profile'); // Navigate to profile page
+  };
+
   
   return (
     
     <React.Fragment>
-      <AppBar color="primary" position="sticky" elevation={0}>
-        <Toolbar>
-          <Grid container spacing={1} sx={{ alignItems: 'center' }}>
-            <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item>
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={onDrawerToggle}
-                edge="start"
-              >
-                <MenuIcon />
+          <AppBar color="primary" position="sticky">
+            <Toolbar sx={{ minHeight: 64 }}>
+              <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
+                <Grid2 sx={{ display: { sm: 'none', xs: 'block' } }}>
+                  <IconButton
+                   size="large"
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={onDrawerToggle}
+                    edge="start"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Grid2>
+                {/* Display dynamic title */}
+                <Typography color="inherit" variant="h6" component="h1">
+                  <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {getTitle()}
+                  </Link>
+                </Typography>
+              </Box>
+
+              {/* search bar */}
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase
+                  placeholder="Search…"
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </Search>
+
+              {/* User Account */}
+              <IconButton sx={{ color: 'inherit', ml:2}} onClick={handleClick}>
+                {avatar? (
+                  <Avatar
+                    src={`${avatarURL}${avatar}`}
+                    alt="User Avatar"
+                    sx={{ width: 40, height: 40, mb: 1, border: '1px solid#f1f1f1', boxShadow:3}}
+                  />
+                ):(
+                  <AccountCircle />
+                )}
+                
               </IconButton>
-            </Grid>
-            <Grid item xs />
-            <Grid item>
-              <Link
-                href="/"
-                variant="body2"
-                sx={{
-                  textDecoration: 'none',
-                  color: lightColor,
-                  '&:hover': {
-                    color: 'common.white',
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+                PaperProps={{
+                  sx: {
+                    width: 200,
                   },
                 }}
-                rel="noopener noreferrer"
-                target="_blank"
               >
-                Go to docs
-              </Link>
-            </Grid>
-            <Grid item>
-              <Tooltip title="Alerts • No alerts">
-                <IconButton color="inherit">
-                  <NotificationsIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
-            <Grid item>
-              <IconButton color="inherit" sx={{ p: 0.5 }} onClick={handleLogout}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-      <AppBar
-        component="div"
-        color="primary"
-        position="static"
-        elevation={0}
-        sx={{ zIndex: 0 }}
-      >
-        <Toolbar>
-          <Grid container spacing={1} sx={{ alignItems: 'center' }}>
-            <Grid item xs>
-              <Typography color="inherit" variant="h5" component="h1">
-                Authentication
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Button
-                sx={{ borderColor: lightColor }}
-                variant="outlined"
-                color="inherit"
-                size="small"
-              >
-                Web setup
-              </Button>
-            </Grid>
-            <Grid item>
-              <Tooltip title="Help">
-                <IconButton color="inherit">
-                  <HelpIcon />
-                </IconButton>
-              </Tooltip>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
+                <MenuItem onClick={handleProfile}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>Settings</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </Menu>
+            </Toolbar>
+          </AppBar>
+    
     </React.Fragment>
   );
 }

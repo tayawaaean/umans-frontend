@@ -1,10 +1,11 @@
 import * as React from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import CssBaseline from '@mui/material/CssBaseline';
+
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Navigator from '../components/headers/Navigator';
+//import Header from '../components/headers/Header';
 import Header from '../components/headers/Header';
 import { useTheme } from '@mui/material/styles';
 import { Outlet } from "react-router-dom";
@@ -23,7 +24,7 @@ function Copyright() {
 
 const drawerWidth = 256;
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useTheme();
   const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));

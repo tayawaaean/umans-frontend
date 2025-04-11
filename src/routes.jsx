@@ -10,6 +10,11 @@ import UserTypes from "./pages/Dashboard/UserTypes";
 import Roles from "./pages/Dashboard/Roles";
 import Sessions from "./pages/Dashboard/Sessions";
 import Logs from "./pages/Dashboard/Logs";
+import About from "./pages/Dashboard/About";
+import Contact from "./pages/Dashboard/Contact";
+import NotFound from "./pages/Dashboard/NotFound";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Profile from "./pages/Dashboard/Profile";
 
 const AppRoutes = () => {
   return (
@@ -22,20 +27,23 @@ const AppRoutes = () => {
         {/* */}
         <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
           <Route element={<AdminLayout />}>
-            <Route path = "/" element={<Users />}/>
+            <Route path = "/" element={<Dashboard />} />
+            <Route path = "/users" element={<Users />}/>
             <Route path = "/apps" element={<Apps />}/>
             <Route path = "/roles" element={<Roles />}/>
             <Route path = "/userTypes" element={<UserTypes />}/>
             <Route path = "/googleAccounts" element={<Users />}/>
             <Route path = "/sessions" element={<Sessions />}/>
-            <Route path = "/about" element={<SignIn />}/>
+            <Route path = "/about" element={<About />}/>
+            <Route path = "/contact" element={<Contact />}/>
             <Route path = "/logs" element={<Logs />}/>
+            <Route path = "/profile" element={<Profile />}/>
           </Route>
         </Route>
         {/* insert other routes here*/}
 
         {/* Catch All other routes */}
-        <Route path="*" element={<h1>404 Not Found</h1>} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </Router>
   );

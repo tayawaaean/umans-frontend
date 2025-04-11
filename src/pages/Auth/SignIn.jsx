@@ -144,7 +144,7 @@ export default function SignIn(props) {
   //sigin handler
   const onSubmit = async (data) => {
     try{
-        const result = await dispatch(login(data));
+        const result = dispatch(login(data));
         if (result.meta.requestStatus === "fulfilled") {
             navigate("/"); // Redirect after successful login
         }

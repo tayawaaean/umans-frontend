@@ -22,8 +22,11 @@ import GoogleIcon from '@mui/icons-material/Google';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import WorkIcon from '@mui/icons-material/Work';
+import UmansLogo from '../../assets/umans.svg?react';
 
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
+import { Typography } from '@mui/material';
+import { Margin } from '@mui/icons-material';
 
 const categories = [
   {
@@ -32,7 +35,7 @@ const categories = [
       {
         id: 'Users',
         icon: <PeopleIcon />,
-        path:'/',
+        path:'/users',
       },
       { id: 'Apps', icon: <DnsRoundedIcon />, path:'/apps' },
       { id: 'Roles', icon: <WorkIcon />, path:'/roles' },
@@ -51,7 +54,7 @@ const categories = [
       { id: 'About', icon: <PublicIcon />, path:'/about' },
       { id: 'Contact', icon: <ContactPhoneIcon /> , path:'/contact'},
       { id: 'Logs', icon: <ListIcon />, path:'/logs' },
-      { id: 'Advance', icon: <PhonelinkSetupIcon />, path:'/settings' },
+      { id: 'Profile', icon: <PhonelinkSetupIcon />, path:'/profile' },
     ],
   },
 ];
@@ -83,13 +86,17 @@ export default function Navigator(props) {
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
-          UMANS
+          <Box display="flex" alignItems="center">
+            <UmansLogo style={{ fill: 'white', width: 50, height: 50 }} />
+            <Typography sx={{fontStyle: 'bold', fontWeight: 'regular',  fontSize: 14, ml:1 }}>User Management System</Typography>
+          </Box>
         </ListItem>
-        <ListItem sx={{ ...item, ...itemCategory }}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText>Overview</ListItemText>
+        <ListItem disablePadding sx={{ ...item, ...itemCategory }}>
+
+          <ListItemButton component={NavLink} to={"/"} selected={location.pathname === '/'} sx={item}>
+            <ListItemIcon><HomeIcon /></ListItemIcon>
+            <ListItemText>Overview</ListItemText>
+          </ListItemButton>
         </ListItem>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#101F33' }}>
