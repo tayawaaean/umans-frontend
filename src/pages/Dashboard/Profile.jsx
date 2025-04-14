@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import {
   Box,
-  Grid,
+  Grid2,
   Typography,
 
 } from "@mui/material";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 
-import ProfileAvatarCard from "../../components/pageComponents/profileAvatarCard";
-import ProfileChangePasswordCard from "../../components/pageComponents/profileChangePasswordCard";
+import ProfileAvatarCard from "../../components/pageComponents/ProfileAvatarCard";
+import ProfileChangePasswordCard from "../../components/pageComponents/ProfileChangePasswordCard";
 
 const Profile = () => {
 
@@ -19,17 +18,17 @@ const Profile = () => {
         My Profile
       </Typography>
 
-      <Grid container spacing={3}>
+      <Grid2 container spacing={3}>
         {/* User Info + Avatar */}
-        <Grid item xs={12} md={6}>
-            <ProfileAvatarCard/>
-        </Grid>
+        <Grid2 size= {{xs:12, md:6}} >
+            <ProfileAvatarCard />
+        </Grid2>
 
         {/* Change Password */}
-        <Grid item xs={12} md={6}>
-            <ProfileChangePasswordCard />
-        </Grid>
-      </Grid>
+        <Grid2 size= {{xs:12, md:6}}>
+          <ProfileChangePasswordCard />
+        </Grid2>
+      </Grid2>
     </Box>
   );
 };

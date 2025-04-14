@@ -8,7 +8,12 @@ const SessionsRow = ({ session, users, apps }) => {
     const dispatch = useDispatch();
 
     const handleDelete = () => {
-        dispatch(deleteSession({ id: session.id})); // Only update this app
+        try{
+            dispatch(deleteSession({ id: session.id})); // Only update this app
+        }catch(error){
+            console.log(error)
+        }
+
     };
     const appMap = apps.reduce((acc, app) => {
         acc[app.id] = app.name;

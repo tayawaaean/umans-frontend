@@ -5,6 +5,10 @@ import {
 
 } from '@mui/material';
 
+import ColorModeSelect from '../../shared-theme/ColorModeSelect';
+import AppTheme from '../../shared-theme/AppTheme';
+import CssBaseline from '@mui/material/CssBaseline';
+
 import MenuIcon from '@mui/icons-material/Menu';
 import { AccountCircle, Brightness4, Brightness7 } from '@mui/icons-material';
 
@@ -125,6 +129,8 @@ function Header(props) {
   return (
     
     <React.Fragment>
+      <AppTheme {...props}>
+        <CssBaseline enableColorScheme />
           <AppBar color="primary" position="sticky">
             <Toolbar sx={{ minHeight: 64 }}>
               <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
@@ -146,6 +152,9 @@ function Header(props) {
                   </Link>
                 </Typography>
               </Box>
+
+
+              <ColorModeSelect  />
 
               {/* search bar */}
               <Search>
@@ -187,7 +196,7 @@ function Header(props) {
               </Menu>
             </Toolbar>
           </AppBar>
-    
+        </AppTheme>
     </React.Fragment>
   );
 }

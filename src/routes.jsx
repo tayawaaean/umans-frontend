@@ -15,6 +15,7 @@ import Contact from "./pages/Dashboard/Contact";
 import NotFound from "./pages/Dashboard/NotFound";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Profile from "./pages/Dashboard/Profile";
+import PasswordReset from "./pages/Dashboard/PasswordReset";
 
 const AppRoutes = () => {
   return (
@@ -41,6 +42,9 @@ const AppRoutes = () => {
           </Route>
         </Route>
         {/* insert other routes here*/}
+
+        {/* password reset route */}
+        <Route path="/reset-password/:token" element={<PasswordReset />} />
 
         {/* Catch All other routes */}
         <Route path="*" element={<NotFound/>} />

@@ -16,8 +16,12 @@ const UserRow = ({ user }) => {
   };
 
   const handleSaveClick = () => {
-    dispatch(updateUser({ id: user.id, data: editedUser })); // Only update this user
-    setIsEditing(false);
+    try{
+        dispatch(updateUser({ id: user.id, data: editedUser })); // Only update this user
+        setIsEditing(false);
+    }catch(error){
+        console.log(error)
+    }
   };
 
   return (

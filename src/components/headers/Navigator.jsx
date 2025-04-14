@@ -85,27 +85,27 @@ export default function Navigator(props) {
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
-        <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
+        <ListItem sx={{  ...itemCategory, fontSize: 22 }}>
           <Box display="flex" alignItems="center">
-            <UmansLogo style={{ fill: 'white', width: 50, height: 50 }} />
+            <UmansLogo style={{  width: 50, height: 50 }} />
             <Typography sx={{fontStyle: 'bold', fontWeight: 'regular',  fontSize: 14, ml:1 }}>User Management System</Typography>
           </Box>
         </ListItem>
-        <ListItem disablePadding sx={{ ...item, ...itemCategory }}>
+        <ListItem disablePadding sx={{ ...itemCategory }}>
 
-          <ListItemButton component={NavLink} to={"/"} selected={location.pathname === '/'} sx={item}>
+          <ListItemButton component={NavLink} to={"/"} selected={location.pathname === '/'}>
             <ListItemIcon><HomeIcon /></ListItemIcon>
             <ListItemText>Overview</ListItemText>
           </ListItemButton>
         </ListItem>
         {categories.map(({ id, children }) => (
-          <Box key={id} sx={{ bgcolor: '#101F33' }}>
+          <Box key={id} >
             <ListItem sx={{ py: 2, px: 3 }}>
-              <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
+              <ListItemText>{id}</ListItemText>
             </ListItem>
             {children.map(({ id: childId, icon, path }) => (
               <ListItem disablePadding key={childId}>
-                <ListItemButton component={NavLink} to={path} selected={location.pathname === path} sx={item}>
+                <ListItemButton component={NavLink} to={path} selected={location.pathname === path} >
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

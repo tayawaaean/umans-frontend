@@ -16,8 +16,12 @@ const TypeRow= ({ type }) => {
   };
 
   const handleSaveClick = () => {
-    dispatch(updateUserType({ id: type.id, data: editedType })); // Only update this type
-    setIsEditing(false);
+    try{
+      dispatch(updateUserType({ id: type.id, data: editedType })); // Only update this type
+      setIsEditing(false);
+    }catch(error){
+     console.log(error) 
+    }
   };
 
   return (

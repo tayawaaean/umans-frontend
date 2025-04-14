@@ -6,7 +6,7 @@ const usersApi = {
     getUsers: () => axiosInstance.get("/users/"),
     getUserbyEmail: (email) => axiosInstance.get("/users/",email),
     updateUser: (id, data) => axiosInstance.put(`/users/${id}`, data),
-    changePassword: () => axiosInstance.post("/users/passwd-change"),
+    changePassword: (id, data) => axiosInstance.put(`/users/passwd-change/${id}`, data),
     deleteUser: (id) => axiosInstance.delete("/users/",id),
   };
 

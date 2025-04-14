@@ -56,13 +56,30 @@ export const updateUser = createAsyncThunk("users/updateUser", async ({id, data}
   }
 });
 
+// Async action to handle getting users
+export const changePassword = createAsyncThunk("users/changePassword", async ({id, data}, {dispatch, rejectWithValue }) => {
+  try {
+      const response = await usersApi.changePassword(id, data);
+      dispatch(showSnackbar({ message: "Password was changed successfully!", severity: "success" }));
+      return response.data; // Expecting { accessToken, user }
+  } catch (error) {
+      if(error.response.data.errors){
+        const eachError = error.response.data.errors.map(err => err.msg).join(", ") || "Change password failed"
+        dispatch(showSnackbar({ message: eachError, severity: "error" }));
+        return rejectWithValue(eachError);
+      }
+      const message = error.response?.data?.msg || "Something went wrong"
+      dispatch(showSnackbar({ message: message, severity: "error" }));
+      return rejectWithValue(message);
+  }
+});
+
 const initialState = {
   users:  ['empty'],
   admins: ['empty'],
   types: ['empty'],
   loading: false,
   error: null,
-  message: null,
 };
 
 const usersSlice = createSlice({
@@ -75,7 +92,6 @@ const usersSlice = createSlice({
           .addCase(getUsers.pending, (state) => {
             state.loading = true;
             state.error = null;
-            state.message = null;
           })
           .addCase(getUsers.fulfilled, (state, action) => {
             state.users = action.payload;
@@ -89,7 +105,6 @@ const usersSlice = createSlice({
           .addCase(createUser.pending, (state) => {
             state.loading = true;
             state.error = null;
-            state.message = null;
           })
           .addCase(createUser.fulfilled, (state, action) => {
             state.loading = false;
@@ -100,8 +115,8 @@ const usersSlice = createSlice({
             state.error = action.payload;
           })
           .addCase(updateUser.pending, (state) => {
+            state.loading = true;
             state.error = null;
-            state.message = null;
           })
           .addCase(updateUser.fulfilled, (state, action) => {
             state.loading = false;
@@ -110,6 +125,18 @@ const usersSlice = createSlice({
             );
           })
           .addCase(updateUser.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+          })
+          .addCase(changePassword.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+          })
+          .addCase(changePassword.fulfilled, (state, action) => {
+            state.loading = false;
+
+          })
+          .addCase(changePassword.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
           })

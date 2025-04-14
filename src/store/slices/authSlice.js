@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
 import authApi from "../../api/authApi";
 import { showSnackbar } from "./snackbarSlice"; // Import the snackbar action
+import { updateAvatar } from "../actions/userShared";
 
 // Async action to handle login
 export const login = createAsyncThunk("auth/superLogin", async (credentials, {dispatch, rejectWithValue }) => {
@@ -53,6 +54,8 @@ export const refreshAccessToken = createAsyncThunk("auth/refresh", async (user, 
         return rejectWithValue(error.response.data || "Token refresh failed");
     }
 });
+
+
 
 
 const initialState = {
@@ -126,7 +129,11 @@ const authSlice = createSlice({
                 state.isAuthenticated = false;
                 localStorage.removeItem("user");
                 localStorage.removeItem("accessToken")
-            });
+            })
+            .addCase(updateAvatar, (state, action) => {
+                state.user.avatar = action.payload;
+                localStorage.setItem("user", JSON.stringify(state.user));
+            })
     },
 });
 export const { clearTokens } = authSlice.actions;

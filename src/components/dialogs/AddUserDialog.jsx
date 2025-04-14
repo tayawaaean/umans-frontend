@@ -7,7 +7,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerSchema } from "../../utils/validationSchema";
 
-
+import AppTheme from '../../shared-theme/AppTheme';
+import ColorModeSelect from '../../shared-theme/ColorModeSelect';
+import CssBaseline from '@mui/material/CssBaseline';
 
 // Function to generate a secure password
 const generatePassword = (length = 12) => {
@@ -17,7 +19,7 @@ const generatePassword = (length = 12) => {
     .join("");
 };
 
-const AddUserDialog = ({ open, handleClose, onSubmit }) => {
+const AddUserDialog = ({ open, handleClose, onSubmit, props }) => {
     const [showPassword, setShowPassword] = React.useState(false);
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
         resolver: yupResolver(registerSchema),
@@ -38,6 +40,8 @@ const AddUserDialog = ({ open, handleClose, onSubmit }) => {
   }
 
   return (
+    <AppTheme {...props}>
+      <CssBaseline enableColorScheme />
     <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle>
           <PersonAdd fontSize="small" style={{ marginRight: 5 }} />Add New User
@@ -102,6 +106,7 @@ const AddUserDialog = ({ open, handleClose, onSubmit }) => {
       <Button onClick={handleSubmit(onSubmit)} color="primary" variant="contained">Add User</Button>
     </DialogActions>
   </Dialog>
+  </AppTheme>
   );
 };
 

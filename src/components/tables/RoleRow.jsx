@@ -17,8 +17,12 @@ const RoleRow = ({ role, users, apps, userTypes }) => {
   };
 
   const handleSaveClick = () => {
-    dispatch(updateRole({ id: role.id, data: editedRole })); // Only update this role
-    setIsEditing(false);
+    try{
+      dispatch(updateRole({ id: role.id, data: editedRole })); // Only update this role
+      setIsEditing(false);
+    }catch(error){
+      console.log(error)
+    }
   };
 
   const appMap = apps.reduce((acc, app) => {

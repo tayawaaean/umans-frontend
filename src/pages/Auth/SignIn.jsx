@@ -153,7 +153,10 @@ export default function SignIn(props) {
     }
   };
 
-  console.log("Is there a user?", user, loading)
+  let ff = {...props}
+    console.log(ff)
+
+
   return (
     <AppTheme {...props}>
       <CssBaseline enableColorScheme />

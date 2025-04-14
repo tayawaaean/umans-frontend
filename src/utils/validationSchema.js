@@ -36,3 +36,27 @@ export const addRoleSchema = yup.object().shape({
   appsId: yup.string().required("App is required"),
   userType: yup.string().required("User type is required"),
 });
+
+export const changePasswordSchema = yup.object().shape({
+  password: yup.string().required("Current password is required"),
+  newPassword: yup.string()
+  .min(8, 'Password should be at least 8 characters')
+  .matches(/[a-z]/, 'Must include a lowercase letter')
+  .matches(/[A-Z]/, 'Must include an uppercase letter')
+  .matches(/[0-9]/, 'Must include a number')
+  .required('New password is required'),
+  confirmPassword: yup.string().oneOf([yup.ref('newPassword')], 'Passwords must match').required('Please confirm your new password'),
+});
+
+export const passwordResetSchema = yup.object().shape({
+  password: yup.string()
+  .min(8, 'Password should be at least 8 characters')
+  .matches(/[a-z]/, 'Must include a lowercase letter')
+  .matches(/[A-Z]/, 'Must include an uppercase letter')
+  .matches(/[0-9]/, 'Must include a number')
+  .required('New password is required'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Passwords must match')
+    .required(),
+});

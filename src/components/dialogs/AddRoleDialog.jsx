@@ -41,7 +41,7 @@ const AddRoleDialog = ({ open, handleClose, onSubmit, users, apps, userTypes }) 
             >
               {users.map((user) => (
                 <MenuItem key={user.id} value={user.id}>
-                  {user.firstName} {user.lastName}
+                  {user.firstName} {user.lastName} ({user.email})
                 </MenuItem>
               ))}
             </TextField>

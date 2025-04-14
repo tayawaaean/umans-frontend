@@ -1,14 +1,27 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  OutlinedInput,
+  InputAdornment,
+  Box,
+  Typography,
+  Avatar,
+} from '@mui/material';
+import LockResetIcon from '@mui/icons-material/LockReset';
+
+import { requestPasswordReset } from '../api/authApi';
+import { useDispatch } from 'react-redux';
+import { showSnackbar } from '../store/slices/snackbarSlice';
 
 function ForgotPassword({ open, handleClose }) {
+  const dispatch = useDispatch();
+
   return (
     <Dialog
       open={open}
@@ -16,35 +29,61 @@ function ForgotPassword({ open, handleClose }) {
       slotProps={{
         paper: {
           component: 'form',
-          onSubmit: (event) => {
+          onSubmit: async (event) => {
             event.preventDefault();
+            const formData = new FormData(event.target);
+            const email = formData.get('email');
+
+            try {
+              const response = await requestPasswordReset(email);
+              dispatch(showSnackbar({ message: "Reset link sent!", severity: "success" }));
+            } catch (error) {
+              dispatch(showSnackbar({ message: error.message || "Failed to send reset link.", severity: "error" }));
+            }
             handleClose();
           },
-          sx: { backgroundImage: 'none' },
-        },
+          sx: {
+            backgroundImage: 'none',
+            px: 4,
+            py: 3,
+            minWidth: 400,
+          },
+        }, 
       }}
     >
-      <DialogTitle>Reset password</DialogTitle>
+      <Box display="flex" flexDirection="column" alignItems="center" mb={2}>
+        <Avatar sx={{ bgcolor: 'primary.main', mb: 1, width: 56, height: 56 }}>
+          <LockResetIcon fontSize="large" />
+        </Avatar>
+        <Typography variant="h6" fontWeight="bold">
+          Reset your password
+        </Typography>
+      </Box>
+
       <DialogContent
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
       >
-        <DialogContentText>
-          Enter your account&apos;s email address, and we&apos;ll send you a link to
-          reset your password.
+        <DialogContentText sx={{ textAlign: 'center' }}>
+          Enter your account's email address and we’ll send you a password reset link.
         </DialogContentText>
+
         <OutlinedInput
           autoFocus
           required
-          margin="dense"
           id="email"
           name="email"
-          label="Email address"
           placeholder="Email address"
           type="email"
           fullWidth
+          startAdornment={
+            <InputAdornment position="start">
+              <LockResetIcon color="action" />
+            </InputAdornment>
+          }
         />
       </DialogContent>
-      <DialogActions sx={{ pb: 3, px: 3 }}>
+
+      <DialogActions sx={{ pt: 2, px: 3, justifyContent: 'center' }}>
         <Button onClick={handleClose}>Cancel</Button>
         <Button variant="contained" type="submit">
           Continue

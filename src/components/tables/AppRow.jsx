@@ -16,8 +16,13 @@ const AppRow = ({ app }) => {
   };
 
   const handleSaveClick = () => {
-    dispatch(updateApp({ id: app.id, data: editedApp })); // Only update this app
-    setIsEditing(false);
+    try{
+      dispatch(updateApp({ id: app.id, data: editedApp })); // Only update this app
+      setIsEditing(false);
+    }catch(error){
+      console.log(error)
+    }
+
   };
 
   return (

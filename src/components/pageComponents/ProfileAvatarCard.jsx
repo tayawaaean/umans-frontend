@@ -15,6 +15,7 @@ import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import fileUpload from "../../utils/fileUpload";
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from "../../store/slices/usersSlice";
+import { updateAvatar } from "../../store/actions/userShared";
 
 const avatarURL=import.meta.env.VITE_IMAGE_SERVER_URL
 
@@ -45,7 +46,7 @@ const ProfileAvatarCard = () => {
       try {
         const upload = await fileUpload(file, '/upload', setLoading, dispatch);
         dispatch(updateUser({id: user.id , data:{ avatar: upload.filePath }}));
-        console.log(upload)
+        dispatch(updateAvatar(upload.filePath));
       } catch (error) {
         console.error('Upload error:', error);
       }

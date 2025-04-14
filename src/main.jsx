@@ -7,6 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import theme from "./styles/theme";
 import './index.css'
 import App from './App.jsx'
+import AppTheme from './shared-theme/AppTheme';
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AlertSnackbar from './components/AlertSnackbar.jsx';
 
@@ -16,9 +17,11 @@ createRoot(document.getElementById('root')).render(
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <AlertSnackbar />
-          <App />
+          <AppTheme>
+            <CssBaseline />
+            <AlertSnackbar />
+            <App />
+          </AppTheme>
         </ThemeProvider>
       </Provider>
     </GoogleOAuthProvider>
