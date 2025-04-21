@@ -28,7 +28,7 @@ import LoadingScreen from "../../components/LoadingScreen";
 
 
 export default function Sessions() {
-    const {sessions, loading } = useSelector((state) => state.sessions);
+    const {sessions, loading, loadingRowId } = useSelector((state) => state.sessions);
     const users = useSelector((state) => state.users.users);
     const apps = useSelector((state) => state.apps.apps);
     const dispatch = useDispatch();
@@ -95,7 +95,7 @@ export default function Sessions() {
                 </Grid>
                 </Toolbar>
             </AppBar>
-            <SessionsTable sessions = {filteredSessions} users={users} apps={apps}/>
+            <SessionsTable sessions = {filteredSessions} users={users} apps={apps} loadingRowId={loadingRowId} />
             </Paper>
         )
     )}

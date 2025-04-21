@@ -22,13 +22,23 @@ import GoogleIcon from '@mui/icons-material/Google';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import WorkIcon from '@mui/icons-material/Work';
-import UmansLogo from '../../assets/umans.svg?react';
 
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { Typography } from '@mui/material';
-import { Margin } from '@mui/icons-material';
+import { UmansLogoStyled } from '../CustomIcons';
+
 
 const categories = [
+  {
+    id: 'Home',
+    children: [
+      {
+        id: 'Overview',
+        icon: <HomeIcon />,
+        path:'/',
+      },
+    ],
+  },
   {
     id: 'Manage',
     children: [
@@ -59,16 +69,6 @@ const categories = [
   },
 ];
 
-const item = {
-  py: '2px',
-  px: 3,
-  color: 'rgba(255, 255, 255, 0.7)',
-  '&:hover, &:focus': {
-    bgcolor: 'rgba(255, 255, 255, 0.08)',
-  //"&.active": { backgroundColor: "rgba(174, 174, 174, 0.71)" }
-  },
-  
-};
 
 const itemCategory = {
   boxShadow: '0 -1px 0 rgb(255,255,255,0.1) inset',
@@ -87,20 +87,14 @@ export default function Navigator(props) {
       <List disablePadding>
         <ListItem sx={{  ...itemCategory, fontSize: 22 }}>
           <Box display="flex" alignItems="center">
-            <UmansLogo style={{  width: 50, height: 50 }} />
+            <UmansLogoStyled style={{  width: 50, height: 50 }} />
             <Typography sx={{fontStyle: 'bold', fontWeight: 'regular',  fontSize: 14, ml:1 }}>User Management System</Typography>
           </Box>
         </ListItem>
-        <ListItem disablePadding sx={{ ...itemCategory }}>
-
-          <ListItemButton component={NavLink} to={"/"} selected={location.pathname === '/'}>
-            <ListItemIcon><HomeIcon /></ListItemIcon>
-            <ListItemText>Overview</ListItemText>
-          </ListItemButton>
-        </ListItem>
+        <Divider sx={{ mt: 2 }} />
         {categories.map(({ id, children }) => (
           <Box key={id} >
-            <ListItem sx={{ py: 2, px: 3 }}>
+            <ListItem sx={{ py: 1, px: 3}}>
               <ListItemText>{id}</ListItemText>
             </ListItem>
             {children.map(({ id: childId, icon, path }) => (

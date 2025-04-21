@@ -4,7 +4,7 @@ import { typographyClasses } from '@mui/material/Typography';
 import { buttonBaseClasses } from '@mui/material/ButtonBase';
 import { chipClasses } from '@mui/material/Chip';
 import { iconButtonClasses } from '@mui/material/IconButton';
-import { gray, red, green } from '../themePrimitives';
+import { gray, red, green, brand } from '../themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
 export const dataDisplayCustomizations = {
@@ -28,6 +28,7 @@ export const dataDisplayCustomizations = {
         },
         [`& .${typographyClasses.root}`]: {
           fontWeight: 500,
+          
         },
         [`& .${buttonBaseClasses.root}`]: {
           display: 'flex',
@@ -45,7 +46,7 @@ export const dataDisplayCustomizations = {
               backgroundColor: alpha(theme.palette.action.selected, 0.3),
             },
             '&:hover': {
-              backgroundColor: alpha(theme.palette.action.selected, 0.5),
+              backgroundColor: alpha(theme.palette.action.selected, .5),
             },
           },
           '&:focus-visible': {
@@ -199,6 +200,11 @@ export const dataDisplayCustomizations = {
   },
   MuiTablePagination: {
     styleOverrides: {
+      root: {
+        paddingLeft: 16,
+        paddingRight: 16,
+        marginTop: 8,
+      },
       actions: {
         display: 'flex',
         gap: 8,
@@ -211,6 +217,32 @@ export const dataDisplayCustomizations = {
       },
     },
   },
+  MuiTableCell: {
+    styleOverrides: {
+      root: ({theme}) => ({
+        fontWeight: 'regular',
+        //fontSize: '1rem',
+        padding: '4px 8px',
+        textAlign: 'center',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+      }),
+      head: ({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? gray[700] : gray[ 100],
+        fontSize: '1.1rem',
+        padding: '10px 8px',
+        color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+      }),
+      body: ({ theme }) => ( {
+        color: theme.palette.mode === 'dark' ? '#ccc' : '333',
+      }),
+    },
+    defaultProps: {
+      align: 'center',
+    },
+  },
+
   MuiIcon: {
     defaultProps: {
       fontSize: 'small',

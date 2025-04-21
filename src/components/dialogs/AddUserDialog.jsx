@@ -21,7 +21,8 @@ const generatePassword = (length = 12) => {
 
 const AddUserDialog = ({ open, handleClose, onSubmit, props }) => {
     const [showPassword, setShowPassword] = React.useState(false);
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+    const [showPassword2, setShowPassword2] = React.useState(false);
+    const { register, handleSubmit, setValue, watch, formState: { errors }, reset } = useForm({
         resolver: yupResolver(registerSchema),
         defaultValues: {
             firstName: "",
@@ -38,20 +39,23 @@ const AddUserDialog = ({ open, handleClose, onSubmit, props }) => {
   const togglePasswordVisibility = () => {
     setShowPassword((prev) => !prev);
   }
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2((prev) => !prev);
+  }
 
   return (
     <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
+    <CssBaseline enableColorScheme />
     <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle>
           <PersonAdd fontSize="small" style={{ marginRight: 5 }} />Add New User
         </DialogTitle>
         <DialogContent>
-            <TextField label="First Name" {...register("firstName")} fullWidth margin="dense" error={!!errors.firstName} helperText={errors.firstName?.message} />
-            <TextField label="Last Name" {...register("lastName")} fullWidth margin="dense" error={!!errors.lastName} helperText={errors.lastName?.message} />
-            <TextField label="Email" {...register("email")} type="email" fullWidth margin="dense" error={!!errors.email} helperText={errors.email?.message} />
-            <TextField label="Mobile No." {...register("mobileNo")} fullWidth margin="dense" error={!!errors.mobileNo} helperText={errors.mobileNo?.message} />
-            <TextField label="Office" {...register("office")} fullWidth margin="dense" error={!!errors.office} helperText={errors.office?.message} />
+            <TextField placeholder="Juana" label="First Name" {...register("firstName")} fullWidth error={!!errors.firstName} helperText={errors.firstName?.message} />
+            <TextField placeholder="Dela Cruz" label="Last Name" {...register("lastName")} fullWidth margin="dense" error={!!errors.lastName} helperText={errors.lastName?.message} />
+            <TextField placeholder="user@email.com" label="Email" {...register("email")} type="email" fullWidth margin="dense" error={!!errors.email} helperText={errors.email?.message} />
+            <TextField placeholder="09123456789" label="Mobile No." {...register("mobileNo")} fullWidth margin="dense" error={!!errors.mobileNo} helperText={errors.mobileNo?.message} />
+            <TextField placeholder="Research Directorate" label="Unit/Office" {...register("office")} fullWidth margin="dense" error={!!errors.office} helperText={errors.office?.message} />
             <TextField select label="Role" {...register("role")} value={watch("role")} fullWidth margin="dense" error={!!errors.role} helperText={errors.role?.message}>
                 <MenuItem value="admin">Admin</MenuItem>
                 <MenuItem value="user">User</MenuItem>
@@ -66,43 +70,55 @@ const AddUserDialog = ({ open, handleClose, onSubmit, props }) => {
             margin="dense"
             error={!!errors.password}
             helperText={errors.password?.message}
-            InputProps={{
+            slotProps={{
+              input:{
                 endAdornment: (
-                <InputAdornment position="end">
-                    <IconButton onClick={() => setValue("password", generatePassword())} title="Generate Password">
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => 
+                        setValue("password", generatePassword(),{
+                          shouldDirty: true,
+                          shouldTouch: true
+                        })
+                      }
+                    title="Generate Password">
                     <GenerateIcon />
                     </IconButton>
                     <IconButton onClick={togglePasswordVisibility}>
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
-                </InputAdornment>
+                  </InputAdornment>
                 ),
+              }
             }}
+            InputLabelProps={{ shrink: !!watch("password") }}
             />
 
             {/* Confirm Password Field */}
             <TextField
             label="Confirm Password"
             {...register("confirmPassword")}
-            type={showPassword ? "text" : "password"}
+            type={showPassword2 ? "text" : "password"}
             fullWidth
             margin="dense"
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
-            InputProps={{
+            slotProps={{
+              input:{
                 endAdornment: (
-                <InputAdornment position="end">
-                    <IconButton onClick={togglePasswordVisibility}>
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                </InputAdornment>
-                ),
+                  <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility2}>
+                      {showPassword2 ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                  </InputAdornment>
+                  ),
+              }
             }}
         />
       </DialogContent>
 
     <DialogActions>
-      <Button onClick={handleClose} color="secondary">Cancel</Button>
+      <Button onClick={()=>{reset(), handleClose()}} color="secondary">Cancel</Button>
       <Button onClick={handleSubmit(onSubmit)} color="primary" variant="contained">Add User</Button>
     </DialogActions>
   </Dialog>

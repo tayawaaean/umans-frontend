@@ -5,10 +5,10 @@ import {
 } from "@mui/material";
 import RoleRow from "./RoleRow";
 
-const RolesTable = ({roles, apps, users, userTypes}) => {
+const RolesTable = ({roles, apps, users, userTypes, loadingRowId }) => {
 
   return (
-    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 4 }}>
+    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 2 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -23,7 +23,7 @@ const RolesTable = ({roles, apps, users, userTypes}) => {
             </TableHead>
             <TableBody>
               {roles.map(role => (
-                <RoleRow key={role.id } role={role} users={users} apps={apps} userTypes={userTypes}/>
+                <RoleRow key={role.id } role={role} users={users} apps={apps} userTypes={userTypes} loadingRowId={loadingRowId} />
               ))}
             </TableBody>
           </Table>

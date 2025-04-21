@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { TableRow, TableCell, Select, MenuItem, IconButton, TextField } from "@mui/material";
+import { TableRow, TableCell, Select, MenuItem, IconButton, TextField, Tooltip } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { updateUserType } from "../../store/slices/userTypesSlice";
 import { Edit, Save, Cancel, CheckCircle, Cancel as CancelIcon } from "@mui/icons-material";
+import LoadingScreen from "../LoadingScreen";
 
-const TypeRow= ({ type }) => {
+
+const TypeRow= ({ type, loadingRowId }) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedType, setEditedType] = useState(type);
@@ -24,22 +26,32 @@ const TypeRow= ({ type }) => {
     }
   };
 
+  const isLoading = loadingRowId === type.id;
+
   return (
     <TableRow key={type.id}>
         <TableCell align="center">
-        {isEditing ? (
+          {isLoading ? (
+            <LoadingScreen caption="Updating..." fullScreen={false} size={30} hideCaption={true} />
+          ) : isEditing ? (
           <>
-            <IconButton size="small" onClick={handleSaveClick} color="success">
-              <Save fontSize="small" style={{ marginRight: 5 }}/> Save
-            </IconButton>
-            <IconButton size="small" onClick={handleCancelClick} color="error">
-              <Cancel fontSize="small" style={{ marginRight: 5 }}/> Cancel 
-            </IconButton>
+            <Tooltip title="Save" placement="right-start">
+                <IconButton onClick={handleSaveClick} color="success">
+                    <Save />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Cancel" placement="right-start">
+                <IconButton onClick={handleCancelClick} color="error">
+                <Cancel />
+                </IconButton>
+            </Tooltip>
           </>
         ) : (
-          <IconButton size="small" onClick={handleEditClick} color="primary">
-            <Edit fontSize="small" style={{ marginRight: 5 }}/> Edit
-          </IconButton>
+            <Tooltip title="Edit">
+                <IconButton onClick={handleEditClick} color="primary">
+                    <Edit /> 
+                </IconButton>
+            </Tooltip>
         )}
         </TableCell>
       

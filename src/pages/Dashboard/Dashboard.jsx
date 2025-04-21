@@ -71,41 +71,41 @@ const Dashboard = () => {
   };
 
   return (
-    <Box sx={{ padding: 3, backgroundColor: "#f4f6f8", minHeight: "100vh" }}>
-      <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 3, color: "#333" }}>
+    <Box sx={{ padding: 3,  minHeight: "100vh" }}>
+      <Typography variant="h4" sx={{ fontWeight: "bold", marginBottom: 3}}>
         Dashboard Overview
       </Typography>
 
       {/* Stats Overview */}
       <Grid container spacing={3}>
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: "#ffffff", boxShadow: 3 }}>
+          <Card sx={{  boxShadow: 3 }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#333" }}>Total Users</Typography>
+              <Typography variant="h6" >Total Users</Typography>
               <Typography variant="h4" sx={{ fontWeight: "bold", color: "#1976d2" }}>{userCount}</Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: "#ffffff", boxShadow: 3 }}>
+          <Card sx={{  boxShadow: 3 }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#333" }}>Total Apps</Typography>
+              <Typography variant="h6" >Total Apps</Typography>
               <Typography variant="h4" sx={{ fontWeight: "bold", color: "#4caf50" }}>{appCount}</Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: "#ffffff", boxShadow: 3 }}>
+          <Card sx={{  boxShadow: 3 }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#333" }}>Total Roles</Typography>
+              <Typography variant="h6" >Total Roles</Typography>
               <Typography variant="h4" sx={{ fontWeight: "bold", color: "#f44336" }}>{roleCount}</Typography>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={12} md={3}>
-          <Card sx={{ backgroundColor: "#ffffff", boxShadow: 3 }}>
+          <Card sx={{  boxShadow: 3 }}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: "#333" }}>Total User Types</Typography>
+              <Typography variant="h6" >Total User Types</Typography>
               <Typography variant="h4" sx={{ fontWeight: "bold", color: "#ff9800" }}>{userTypeCount}</Typography>
             </CardContent>
           </Card>
@@ -115,7 +115,7 @@ const Dashboard = () => {
       {/* Graph Section */}
       <Grid container spacing={3} sx={{ marginTop: 3 }}>
         <Grid item xs={12} md={6}>
-          <Card sx={{ boxShadow: 3, backgroundColor: "#ffffff", height: "100%" }}>
+          <Card sx={{ boxShadow: 3,  height: "100%" }}>
             <CardContent sx={{ height: "100%" }}>
               <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#333" }}>
                 Users Growth Over Time
@@ -127,7 +127,7 @@ const Dashboard = () => {
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card sx={{ boxShadow: 3, backgroundColor: "#ffffff", height: "100%" }}>
+          <Card sx={{ boxShadow: 3,  height: "100%" }}>
             <CardContent sx={{ height: "100%" }}>
               <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold", color: "#333" }}>
                 App Usage Over Time
@@ -145,8 +145,8 @@ const Dashboard = () => {
         <Grid item xs={12} md={4}>
           <Card sx={{ boxShadow: 3, backgroundColor: "#ffffff" }}>
             <CardContent>
-              <Typography variant="h6" sx={{ fontWeight: "bold", color: "#333" }}>Add New User</Typography>
-              <Button onClick={() => navigateToPage("/add-user")} variant="contained" fullWidth sx={{ background: "#1976d2", color: "white", "&:hover": { backgroundColor: "#1565c0" } }}>
+              <Typography variant="h6" sx={{ fontWeight: "bold"}}>Add New User</Typography>
+              <Button onClick={() => navigateToPage("/users")} variant="contained" fullWidth sx={{ background: "#1976d2", color: "white", "&:hover": { backgroundColor: "#1565c0" } }}>
                 Go to Add User
               </Button>
             </CardContent>
@@ -155,7 +155,7 @@ const Dashboard = () => {
         <Grid item xs={12} md={4}>
           <Card sx={{ boxShadow: 3, backgroundColor: "#ffffff" }}>
             <CardContent>
-              <Typography variant="h6" sx={{ fontWeight: "bold", color: "#333" }}>Manage Roles</Typography>
+              <Typography variant="h6" sx={{ fontWeight: "bold"}}>Manage Roles</Typography>
               <Button onClick={() => navigateToPage("/roles")} variant="contained" fullWidth sx={{ background: "#f44336", color: "white", "&:hover": { backgroundColor: "#e53935" } }}>
                 Go to Roles
               </Button>
@@ -165,7 +165,7 @@ const Dashboard = () => {
         <Grid item xs={12} md={4}>
           <Card sx={{ boxShadow: 3, backgroundColor: "#ffffff" }}>
             <CardContent>
-              <Typography variant="h6" sx={{ fontWeight: "bold", color: "#333" }}>Manage Apps</Typography>
+              <Typography variant="h6" sx={{ fontWeight: "bold"}}>Manage Apps</Typography>
               <Button onClick={() => navigateToPage("/apps")} variant="contained" fullWidth sx={{ background: "#4caf50", color: "white", "&:hover": { backgroundColor: "#388e3c" } }}>
                 Go to Apps
               </Button>

@@ -34,7 +34,7 @@ import AddRoleDialog from "../../components/dialogs/AddRoleDialog";
 
 export default function Roles() {
     //redux states
-  const {roles, loading } = useSelector((state) => state.roles);
+  const {roles, loading, loadingRowId } = useSelector((state) => state.roles);
   const users = useSelector((state) => state.users.users);
   const apps = useSelector((state) => state.apps.apps);
   const userTypes = useSelector((state) => state.userTypes.userTypes);
@@ -127,7 +127,7 @@ export default function Roles() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <RolesTable roles = {filterRoles} users={users} apps={apps} userTypes={userTypes} />
+          <RolesTable roles = {filterRoles} users={users} apps={apps} userTypes={userTypes} loadingRowId={loadingRowId} />
         </Paper>
       )}
     </div>

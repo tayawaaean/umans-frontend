@@ -79,6 +79,7 @@ const initialState = {
   admins: ['empty'],
   types: ['empty'],
   loading: false,
+  loadingRowId: null,
   error: null,
 };
 
@@ -114,18 +115,18 @@ const usersSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(updateUser.pending, (state) => {
-            state.loading = true;
+          .addCase(updateUser.pending, (state, action) => {
+            state.loadingRowId = action.meta.arg.id;
             state.error = null;
           })
           .addCase(updateUser.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.users = state.users.map((user) =>
               user.id === action.payload.id ? action.payload : user
             );
           })
           .addCase(updateUser.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.error = action.payload;
           })
           .addCase(changePassword.pending, (state) => {

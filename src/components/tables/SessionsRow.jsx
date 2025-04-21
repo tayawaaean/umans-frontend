@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { TableRow, TableCell, Select, MenuItem, IconButton, TextField } from "@mui/material";
+import { TableRow, TableCell, Select, MenuItem, IconButton, TextField, Tooltip } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { deleteSession } from "../../store/slices/sessionsSlice";
-import { Edit, Save, Cancel, CheckCircle, Cancel as CancelIcon } from "@mui/icons-material";
+import { Edit, Delete, Cancel, CheckCircle, Cancel as CancelIcon } from "@mui/icons-material";
+import LoadingScreen from "../LoadingScreen";
 
-const SessionsRow = ({ session, users, apps }) => {
+
+const SessionsRow = ({ session, users, apps, loadingRowId }) => {
     const dispatch = useDispatch();
 
     const handleDelete = () => {
@@ -26,12 +28,20 @@ const SessionsRow = ({ session, users, apps }) => {
         return acc;
     }, {});
 
+    const isLoading = loadingRowId === session.id;
+
     return (
         <TableRow key={session.id}>
             <TableCell align="center">
-            <IconButton size="small" onClick={handleDelete} color="primary">
-                <Edit fontSize="small" style={{ marginRight: 5 }}/> Delete
-            </IconButton>
+                {isLoading ? (
+                <LoadingScreen caption="Updating..." fullScreen={false} size={30} hideCaption={true} />
+                ) : (
+                    <Tooltip title="Delete">
+                        <IconButton onClick={handleDelete} color="primary">
+                            <Delete /> 
+                        </IconButton>
+                    </Tooltip>
+                )}
             </TableCell>
             <TableCell align="center">
                 <TextField variant="standard" value={session.token} size="small" />

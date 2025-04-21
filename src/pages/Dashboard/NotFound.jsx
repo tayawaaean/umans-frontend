@@ -6,7 +6,7 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   const goHome = () => {
-    navigate("/"); // This will redirect the user to the home page
+    navigate("/login"); // This will redirect the user to the home page
   };
 
   return (

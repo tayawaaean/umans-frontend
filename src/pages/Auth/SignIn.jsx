@@ -9,7 +9,13 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from '../../components/ForgotPassword';
 import AppTheme from '../../shared-theme/AppTheme';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../components/CustomIcons';
+import { GoogleIcon, FacebookIcon, SitemarkIcon, UmansLogoStyled } from '../../components/CustomIcons';
+
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 
 //google imports
 import { googleLogin, callback } from "../../store/slices/googleSlice"; // Update with actual path
@@ -73,11 +79,11 @@ export const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn(props) {
+export default function SignIn() {
   
   const [open, setOpen] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { user, loading, error } = useSelector((state) => state.auth);
-  const {message } = useSelector((state) => state.users);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -143,9 +149,10 @@ export default function SignIn(props) {
 
   //sigin handler
   const onSubmit = async (data) => {
+    console.log(data)
     try{
         const result = dispatch(login(data));
-        if (result.meta.requestStatus === "fulfilled") {
+        if (result.meta?.requestStatus === "fulfilled") {
             navigate("/"); // Redirect after successful login
         }
     } catch (error){
@@ -153,18 +160,16 @@ export default function SignIn(props) {
     }
   };
 
-  let ff = {...props}
-    console.log(ff)
-
-
   return (
-    <AppTheme {...props}>
-      <CssBaseline enableColorScheme />
+    <div>
       {loading? <LoadingScreen caption='Loading...' /> : (
       <SignInContainer direction="column" justifyContent="space-between">
         <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
-          <SitemarkIcon />
+          <Box display="flex" alignItems="center" justifyContent="center" mb={1}>
+            <UmansLogoStyled style={{  width: 70, height: 70 }} />
+            {/* <Typography sx={{fontStyle: 'bold', fontWeight: 'regular',  fontSize: 20, ml:1 }}>User Management System</Typography> */}
+          </Box>
           <Typography
             component="h1"
             variant="h4"
@@ -209,7 +214,7 @@ export default function SignIn(props) {
                 helperText={errors.password?.message}
                 name="password"
                 placeholder="••••••••"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 autoComplete="current-password"
                 autoFocus
@@ -217,10 +222,26 @@ export default function SignIn(props) {
                 fullWidth
                 variant="outlined"
                 color={errors.password ? 'error' : 'primary'}
+                slotProps={{
+                  input:{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }
+
+                }}
               />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox {...register("remember")} color="primary" checked={true} />}
               label="Remember me"
             />
             <ForgotPassword open={open} handleClose={handleClose} />
@@ -274,6 +295,6 @@ export default function SignIn(props) {
         </Card>
       </SignInContainer>
       )}
-    </AppTheme>
+    </div>
   );
 }

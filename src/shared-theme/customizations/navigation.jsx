@@ -64,23 +64,26 @@ export const navigationCustomizations = {
     },
     styleOverrides: {
       root: ({ theme }) => ({
-        borderRadius: (theme.vars || theme).shape.borderRadius,
-        border: '1px solid',
-        borderColor: gray[200],
-        backgroundColor: (theme.vars || theme).palette.background.paper,
-        boxShadow: `inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)`,
+        
+        //border: '1px solid',
+        //borderColor: gray[200],
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        //backgroundColor: (theme.vars || theme).palette.background.paper,
+        //boxShadow: `inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)`,
         '&:hover': {
-          borderColor: gray[300],
+          borderRadius: (theme.vars || theme).shape.borderRadius,
+          borderColor: gray[500],
           backgroundColor: (theme.vars || theme).palette.background.paper,
-          boxShadow: 'none',
+          boxShadow: `inset 0 1px 0 1px hsla(0, 0.00%, 0.00%, 0.65), inset 0 -1px 0 1px rgba(33, 109, 250, 0.5)`,
         },
         [`&.${selectClasses.focused}`]: {
           outlineOffset: 0,
           borderColor: gray[400],
         },
-        '&:before, &:after': {
-          display: 'none',
-        },
+        // '&:before, &:after': {
+        //   display: 'none',
+        // },
         ...theme.applyStyles('dark', {
           borderRadius: (theme.vars || theme).shape.borderRadius,
           borderColor: gray[700],
@@ -95,9 +98,9 @@ export const navigationCustomizations = {
             outlineOffset: 0,
             borderColor: gray[900],
           },
-          '&:before, &:after': {
-            display: 'none',
-          },
+          // '&:before, &:after': {
+          //   display: 'none',
+          // },
         }),
       }),
       select: ({ theme }) => ({

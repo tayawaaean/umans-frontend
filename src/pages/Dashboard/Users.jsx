@@ -29,7 +29,7 @@ import AddUserDialog from "../../components/dialogs/AddUserDialog";
 
 
 export default function Users() {
-  const {users, loading } = useSelector((state) => state.users);
+  const {users, loading, loadingRowId } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
@@ -108,7 +108,7 @@ export default function Users() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <UsersTable users = {filteredUsers} />
+          <UsersTable users = {filteredUsers} loadingRowId={loadingRowId} />
         </Paper>
       )}
     </div>

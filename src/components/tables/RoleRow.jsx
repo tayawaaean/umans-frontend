@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { TableRow, TableCell, Select, MenuItem, IconButton, TextField } from "@mui/material";
+import { TableRow, TableCell, Select, MenuItem, IconButton, Tooltip } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { updateRole } from "../../store/slices/rolesSlice";
 import { Edit, Save, Cancel, CheckCircle, Cancel as CancelIcon } from "@mui/icons-material";
+import LoadingScreen from "../LoadingScreen";
 
-
-const RoleRow = ({ role, users, apps, userTypes }) => {
+const RoleRow = ({ role, users, apps, userTypes, loadingRowId }) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedRole, setEditRole] = useState(role);
@@ -35,26 +35,35 @@ const RoleRow = ({ role, users, apps, userTypes }) => {
     return acc;
   }, {});
 
+  const isLoading = loadingRowId === role.id;
 
   return (
     <TableRow key={role.id}>
         <TableCell align="center">
-        {isEditing ? (
+          {isLoading ? (
+            <LoadingScreen caption="Updating..." fullScreen={false} size={30} hideCaption={true} />
+          ) : isEditing ? (
           <>
-            <IconButton size="small" onClick={handleSaveClick} color="success">
-              <Save fontSize="small" style={{ marginRight: 5 }}/> Save
-            </IconButton>
-            <IconButton size="small" onClick={handleCancelClick} color="error">
-              <Cancel fontSize="small" style={{ marginRight: 5 }}/> Cancel 
-            </IconButton>
+            <Tooltip title="Save" placement="right-start">
+                <IconButton onClick={handleSaveClick} color="success">
+                    <Save />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Cancel" placement="right-start">
+                <IconButton onClick={handleCancelClick} color="error">
+                <Cancel />
+                </IconButton>
+            </Tooltip>
           </>
         ) : (
-          <IconButton size="small" onClick={handleEditClick} color="primary">
-            <Edit fontSize="small" style={{ marginRight: 5 }}/> Edit
-          </IconButton>
+            <Tooltip title="Edit">
+                <IconButton onClick={handleEditClick} color="primary">
+                    <Edit /> 
+                </IconButton>
+            </Tooltip>
         )}
         </TableCell>
-        <TableCell>
+        <TableCell align="center">
             {isEditing ? (
             <Select
                 value={editedRole.appsId || role.appsId}
@@ -71,7 +80,7 @@ const RoleRow = ({ role, users, apps, userTypes }) => {
             appMap[role.appsId] || "Unknown"
             )}
         </TableCell>
-        <TableCell>
+        <TableCell align="center">
             {isEditing ? (
             <Select
                 value={editedRole.userId || role.userId}
@@ -88,7 +97,7 @@ const RoleRow = ({ role, users, apps, userTypes }) => {
             userMap[role.userId] || "Unknown"
             )}
         </TableCell>
-        <TableCell>
+        <TableCell align="center">
             {isEditing ? (
             <Select
                 value={editedRole.userType || role.userType}
@@ -123,7 +132,7 @@ const RoleRow = ({ role, users, apps, userTypes }) => {
             minute: "2-digit",
             })}
         </TableCell>
-        <TableCell>
+        <TableCell align="center">
             {isEditing ? (
             <Select
                 variant="standard"

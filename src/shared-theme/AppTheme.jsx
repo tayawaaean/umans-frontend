@@ -7,6 +7,7 @@ import { dataDisplayCustomizations } from './customizations/dataDisplay';
 import { feedbackCustomizations } from './customizations/feedback';
 import { navigationCustomizations } from './customizations/navigation';
 import { surfacesCustomizations } from './customizations/surfaces';
+import { layoutCustomizations } from './customizations/layout';
 import { colorSchemes, typography, shadows, shape } from './themePrimitives';
 
 function AppTheme(props) {
@@ -30,6 +31,7 @@ function AppTheme(props) {
             ...feedbackCustomizations,
             ...navigationCustomizations,
             ...surfacesCustomizations,
+            ...layoutCustomizations,
             ...themeComponents,
           },
         });

@@ -59,6 +59,7 @@ export const updateApp = createAsyncThunk("apps/updateApp", async ({id, data}, {
 const initialState = {
   apps:  ['empty'],
   loading: false,
+  loadingRowId: null,
   error: null,
   message: null,
 };
@@ -96,18 +97,18 @@ const appsSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(updateApp.pending, (state) => {
-            state.loading = true;
+          .addCase(updateApp.pending, (state, action) => {
+            state.loadingRowId = action.meta.arg.id;
             state.error = null;
           })
           .addCase(updateApp.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.apps = state.apps.map((app) =>
               app.id === action.payload.id ? action.payload : app
             );
           })
           .addCase(updateApp.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.error = action.payload;
 
           })

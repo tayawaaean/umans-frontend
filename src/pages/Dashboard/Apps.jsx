@@ -30,7 +30,7 @@ import AddAppDialog from "../../components/dialogs/AddAppDialog";
 
 
 export default function Apps() {
-  const {apps, loading } = useSelector((state) => state.apps);
+  const {apps, loading, loadingRowId } = useSelector((state) => state.apps);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
@@ -109,7 +109,7 @@ export default function Apps() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <AppsTable apps = {filteredApps} />
+          <AppsTable apps = {filteredApps} loadingRowId = {loadingRowId} />
         </Paper>
       )}
     </div>

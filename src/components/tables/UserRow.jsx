@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { TableRow, TableCell, Select, MenuItem, IconButton, TextField } from "@mui/material";
+import { TableRow, TableCell, Select, MenuItem, IconButton, TextField, Tooltip } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../store/slices/usersSlice";
 import { Edit, Save, Cancel, CheckCircle, Cancel as CancelIcon } from "@mui/icons-material";
+import LoadingScreen from "../LoadingScreen";
 
-const UserRow = ({ user }) => {
+
+const UserRow = ({ user, loadingRowId }) => {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
@@ -24,22 +26,32 @@ const UserRow = ({ user }) => {
     }
   };
 
+  const isLoading = loadingRowId === user.id;
+
   return (
     <TableRow key={user.id}>
         <TableCell align="center">
-        {isEditing ? (
+          {isLoading ? (
+            <LoadingScreen caption="Updating..." fullScreen={false} size={30} hideCaption={true} />
+          ) : isEditing ? (
           <>
-            <IconButton onClick={handleSaveClick} color="success">
-              <Save />
-            </IconButton>
-            <IconButton onClick={handleCancelClick} color="error">
-              <Cancel />
-            </IconButton>
+            <Tooltip title="Save" placement="right-start">
+                <IconButton onClick={handleSaveClick} color="success">
+                    <Save />
+                </IconButton>
+            </Tooltip>
+            <Tooltip title="Cancel" placement="right-start">
+                <IconButton onClick={handleCancelClick} color="error">
+                <Cancel />
+                </IconButton>
+            </Tooltip>
           </>
         ) : (
-          <IconButton onClick={handleEditClick} color="primary">
-            <Edit />
-          </IconButton>
+            <Tooltip title="Edit">
+                <IconButton onClick={handleEditClick} color="primary">
+                    <Edit /> 
+                </IconButton>
+            </Tooltip>
         )}
         </TableCell>
         <TableCell>
@@ -48,7 +60,7 @@ const UserRow = ({ user }) => {
                 variant="standard"
                 value={editedUser.role}
                 onChange={(e) => setEditedUser({ ...editedUser, role: e.target.value })}
-                size="small"
+                //size="small"
             >
                 <MenuItem value="admin">Admin</MenuItem>
                 <MenuItem value="user">User</MenuItem>
@@ -136,7 +148,7 @@ const UserRow = ({ user }) => {
             })}
         </TableCell>
 
-        <TableCell>
+        <TableCell align="center">
             {isEditing ? (
             <Select
                 variant="standard"

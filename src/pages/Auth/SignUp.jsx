@@ -5,8 +5,9 @@ import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import AppTheme from '../../shared-theme/AppTheme';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from '../../components/CustomIcons';
+import { GoogleIcon, FacebookIcon, SitemarkIcon, UmansLogoStyled } from '../../components/CustomIcons';
 
+import UmansLogo from '../../assets/umans.svg?react';
 
 //import logic components from react and redux
 import { useDispatch, useSelector } from "react-redux";
@@ -96,7 +97,10 @@ export default function SignUp(props) {
       <SignUpContainer direction="column" maxWidth="calc((1 - var(--template-frame-width, 0)) * 100dvw)">
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
         <Card variant="outlined">
-          <SitemarkIcon />
+          <Box display="flex" alignItems="center" justifyContent="center" mb={1}>
+            <UmansLogoStyled style={{  width: 70, height: 70 }} />
+            {/* <Typography sx={{fontStyle: 'bold', fontWeight: 'regular',  fontSize: 20, ml:1 }}>User Management System</Typography> */}
+          </Box>
           <Typography
             component="h1"
             variant="h4"

@@ -5,11 +5,11 @@ import {
 } from "@mui/material";
 import SessionsRow from "./SessionsRow";
 
-const SessionsTable = ({sessions, apps, users,}) => {
+const SessionsTable = ({sessions, apps, users, loadingRowId}) => {
 
   //const apps = useSelector((state) => state.apps.apps);
   return (
-    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 4 }}>
+    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 2 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -22,7 +22,7 @@ const SessionsTable = ({sessions, apps, users,}) => {
             </TableHead>
             <TableBody>
               {sessions.map(session => (
-                <SessionsRow key={session.id } session={session} users={users} apps={apps} />
+                <SessionsRow key={session.id } session={session} users={users} apps={apps} loadingRowId={loadingRowId} />
               ))}
             </TableBody>
           </Table>

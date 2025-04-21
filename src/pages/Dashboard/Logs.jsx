@@ -102,7 +102,7 @@ export default function Logs() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <LogsTable logs = {filteredLogs} users={users} />
+          <LogsTable users={users} />
         </Paper>
       )}
     </div>

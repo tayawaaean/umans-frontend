@@ -5,11 +5,11 @@ import {
 } from "@mui/material";
 import AppRow from "./AppRow";
 
-const AppsTable = ({apps}) => {
+const AppsTable = ({apps, loadingRowId}) => {
 
   //const apps = useSelector((state) => state.apps.apps);
   return (
-    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 4 }}>
+    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 2 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -26,7 +26,7 @@ const AppsTable = ({apps}) => {
             </TableHead>
             <TableBody>
               {apps.map(app => (
-                <AppRow key={app.id } app={app} />
+                <AppRow key={app.id } app={app} loadingRowId={loadingRowId} />
               ))}
             </TableBody>
           </Table>

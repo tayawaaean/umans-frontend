@@ -58,17 +58,17 @@ export const inputsCustomizations = {
             },
             style: {
               color: 'white',
-              backgroundColor: gray[900],
-              backgroundImage: `linear-gradient(to bottom, ${gray[700]}, ${gray[800]})`,
-              boxShadow: `inset 0 1px 0 ${gray[600]}, inset 0 -1px 0 1px hsl(220, 0%, 0%)`,
-              border: `1px solid ${gray[700]}`,
+              backgroundColor: brand[500],
+              //backgroundImage: `linear-gradient(to bottom, ${brand[700]}, ${brand[800]})`, // adds gradient effect tpt make it  bit 3D
+              boxShadow: `inset 0 1px 0 ${brand[300]}, inset 0 -1px 0 1px rgba(75, 81, 255, 0.52)`,
+              border: `0.5px solid ${gray[300]}`,
               '&:hover': {
                 backgroundImage: 'none',
-                backgroundColor: gray[700],
+                backgroundColor: brand[700],
                 boxShadow: 'none',
               },
               '&:active': {
-                backgroundColor: gray[800],
+                backgroundColor: brand[800],
               },
               ...theme.applyStyles('dark', {
                 color: 'black',
@@ -104,7 +104,7 @@ export const inputsCustomizations = {
               },
               '&:active': {
                 backgroundColor: brand[700],
-                backgroundImage: 'none',
+
               },
             },
           },
@@ -224,26 +224,27 @@ export const inputsCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         boxShadow: 'none',
-        borderRadius: (theme.vars || theme).shape.borderRadius,
+        //borderRadius: (theme.vars || theme).shape.borderRadius,
         textTransform: 'none',
         fontWeight: theme.typography.fontWeightMedium,
         letterSpacing: 0,
-        color: (theme.vars || theme).palette.text.primary,
-        border: '1px solid ',
+        //color: (theme.vars || theme).palette.text.primary,
+        //border: '1px solid ',
         borderColor: gray[200],
         backgroundColor: alpha(gray[50], 0.3),
         '&:hover': {
-          backgroundColor: gray[100],
+          backgroundColor: gray[300],
           borderColor: gray[300],
         },
         '&:active': {
-          backgroundColor: gray[200],
+          backgroundColor: brand[200],
+          borderColor: gray[100],
         },
         ...theme.applyStyles('dark', {
           backgroundColor: gray[800],
           borderColor: gray[700],
           '&:hover': {
-            backgroundColor: gray[900],
+            backgroundColor: gray[600],
             borderColor: gray[600],
           },
           '&:active': {
@@ -381,20 +382,23 @@ export const inputsCustomizations = {
         padding: 0,
       },
       root: ({ theme }) => ({
+        //minHeight: '56px',
         padding: '8px 12px',
+        marginTop: 5, //spacing for the label
         color: (theme.vars || theme).palette.text.primary,
         borderRadius: (theme.vars || theme).shape.borderRadius,
-        border: `1px solid ${(theme.vars || theme).palette.divider}`,
+        //border: `1px solid ${(theme.vars || theme).palette.divider}`,
         backgroundColor: (theme.vars || theme).palette.background.default,
         transition: 'border 120ms ease-in',
         '&:hover': {
-          borderColor: gray[400],
+          //borderColor: gray[400],
         },
-        [`&.${outlinedInputClasses.focused}`]: {
-          outline: `3px solid ${alpha(brand[500], 0.5)}`,
-          borderColor: brand[400],
-        },
+        // [`&.${outlinedInputClasses.focused}`]: {
+        //   outline: `3px solid ${alpha(brand[500], 0.5)}`,
+        //   borderColor: brand[400],
+        // },
         ...theme.applyStyles('dark', {
+          //color: gray[500],
           '&:hover': {
             borderColor: gray[500],
           },
@@ -419,7 +423,12 @@ export const inputsCustomizations = {
         ],
       }),
       notchedOutline: {
-        border: 'none',
+        '& legend': {
+          fontSize: '0.75rem',  // text size of the floating label inside the notch
+          lineHeight: '1rem',
+          //padding: '0 4px',     // space inside the notch
+          width: 'auto',        // auto width (optional)
+        },
       },
     },
   },
@@ -437,7 +446,35 @@ export const inputsCustomizations = {
     styleOverrides: {
       root: ({ theme }) => ({
         typography: theme.typography.caption,
-        marginBottom: 8,
+        //marginBottom: 8,
+      }),
+    },
+  },
+  //text field global customizations
+  MuiTextField: {
+    defaultProps: {
+      size: 'small',
+      margin: 'dense',
+      variant: 'outlined',
+    },
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        // default position tweaks
+        padding: '0 0px',
+        //fontSize: '1rem',
+        transform: 'translate(14px, 13px) scale(1)', //position of label and size
+        transition: theme.transitions.create(['color', 'transform'], {
+          duration: theme.transitions.duration.shorter,
+          easing: theme.transitions.easing.easeOut,
+        }),
+
+        // for focused/shrunk state (when the label floats)
+        '&.MuiInputLabel-shrink': {
+          transform: 'translate(17px, -5px) scale(0.85)', //position after shingking and scale of shrink
+          //padding: '0 7px'
+        },
       }),
     },
   },

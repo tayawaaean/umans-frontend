@@ -1,5 +1,8 @@
 import * as React from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
+import { styled, useTheme } from '@mui/material/styles';
+import UmansLogo from './../assets/umans.svg?react';
+
 
 export function SitemarkIcon() {
   return (
@@ -118,3 +121,9 @@ export function GoogleIcon() {
     </SvgIcon>
   );
 }
+
+export const UmansLogoStyled = styled(UmansLogo)(({ theme }) => ({
+  path: {
+    fill: theme.palette.mode === 'dark' ? '#fff' : '#000', // customize per element
+  },
+}));

@@ -57,10 +57,10 @@ const AdminLayout = () => {
       <Box sx={{ flexGrow:1, display: 'flex', flexDirection: 'column', overflow: 'hidden'}}>
         <Header onDrawerToggle={handleDrawerToggle} />
         {/* Page Content */}
-        <Box component="main" sx={{ flexGrow: 1, py: 6, px: 4, bgcolor: '#eaeff1', overflow: 'auto'}}>
+        <Box component="main" sx={{ flexGrow: 1, py: 6, px: 4, overflow: 'auto'}}>
           <Outlet />
         </Box>
-        <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1',width: '100%' }}>
+        <Box component="footer" sx={{ p: 2,width: '100%' }}>
           <Copyright />
         </Box>
       </Box>

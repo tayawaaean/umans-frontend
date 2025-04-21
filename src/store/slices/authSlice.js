@@ -7,6 +7,14 @@ import { updateAvatar } from "../actions/userShared";
 export const login = createAsyncThunk("auth/superLogin", async (credentials, {dispatch, rejectWithValue }) => {
     try {
         const response = await authApi.login(credentials);
+        const {user, token} = response.data
+        if (credentials.remember) {
+            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("accessToken", token.accessToken)
+          } else {
+            localStorage.removeItem("user");
+            localStorage.removeItem("accessToken");
+          }
         return response.data; // Expecting { accessToken, user }
     } catch (error) {
         
@@ -91,8 +99,7 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
                 state.accessToken = action.payload.token.accessToken;
                 state.isAuthenticated = true;
-                localStorage.setItem("user", JSON.stringify(action.payload.user));
-                localStorage.setItem("accessToken", action.payload.token.accessToken)
+
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;

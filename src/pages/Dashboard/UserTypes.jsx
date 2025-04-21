@@ -29,7 +29,7 @@ import AddUserTypeDialog from "../../components/dialogs/AddUserTypeDialog";
 
 
 export default function UserTypes() {
-  const {userTypes, loading } = useSelector((state) => state.userTypes);
+  const {userTypes, loading, loadingRowId } = useSelector((state) => state.userTypes);
   const dispatch = useDispatch();
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
@@ -108,7 +108,7 @@ export default function UserTypes() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <UserTypesTable userTypes = {filteredTypes} />
+          <UserTypesTable userTypes = {filteredTypes} loadingRowId={loadingRowId} />
         </Paper>
       )}
     </div>

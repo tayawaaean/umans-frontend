@@ -44,7 +44,8 @@ export const deleteSession = createAsyncThunk("sessions/deleteSession", async ({
 
 const initialState = {
   sessions:  ['empty'],
-  loading: false,
+  loading: null,
+  loadingRowId: null,
   error: null,
 
 };
@@ -68,16 +69,16 @@ const sessionsSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(deleteSession.pending, (state) => {
-            state.loading = true;
+          .addCase(deleteSession.pending, (state, action) => {
+            state.loadingRowId = action.meta.arg.id;
             state.error = null;
           })
           .addCase(deleteSession.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.sessions = state.sessions.filter(session => session.id !== action.payload.id);
           })
           .addCase(deleteSession.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.error = action.payload;
 
           })

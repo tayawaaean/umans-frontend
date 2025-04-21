@@ -59,6 +59,7 @@ export const updateRole = createAsyncThunk("roles/updateRole", async ({id, data}
 const initialState = {
   roles:  ['empty'],
   loading: false,
+  loadingRowId: null,
   error: null,
 };
 
@@ -93,18 +94,18 @@ const rolesSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(updateRole.pending, (state) => {
-            state.loading = true;
+          .addCase(updateRole.pending, (state, action) => {
+            state.loadingRowId = action.meta.arg.id;
             state.error = null;
           })
           .addCase(updateRole.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.roles = state.roles.map((role) =>
               role.id === action.payload.id ? action.payload : role
             );
           })
           .addCase(updateRole.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.error = action.payload;
 
           })

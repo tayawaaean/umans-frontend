@@ -5,7 +5,6 @@ import {
 
 } from '@mui/material';
 
-import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import AppTheme from '../../shared-theme/AppTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -20,6 +19,7 @@ import { styled, alpha } from '@mui/material/styles';
 
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
+import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 
 const avatarURL=import.meta.env.VITE_IMAGE_SERVER_URL
 
@@ -153,9 +153,7 @@ function Header(props) {
                 </Typography>
               </Box>
 
-
-              <ColorModeSelect  />
-
+              <ColorModeIconDropdown />
               {/* search bar */}
               <Search>
                 <SearchIconWrapper>
@@ -184,9 +182,14 @@ function Header(props) {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                PaperProps={{
-                  sx: {
-                    width: 200,
+                slotProps={{
+                  paper: {
+                    variant: 'outlined',
+                    elevation: 0,
+                    sx: {
+                      my: '4px',
+                      width: 200,
+                    },
                   },
                 }}
               >

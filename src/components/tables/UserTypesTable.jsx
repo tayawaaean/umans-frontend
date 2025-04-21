@@ -5,11 +5,11 @@ import {
 } from "@mui/material";
 import TypeRow from "./TypeRow";
 
-const UserTypeTable = ({userTypes}) => {
+const UserTypeTable = ({userTypes, loadingRowId}) => {
 
   //const users = useSelector((state) => state.users.users);
   return (
-    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 4 }}>
+    <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 2 }}>
           <Table>
             <TableHead>
               <TableRow>
@@ -22,7 +22,7 @@ const UserTypeTable = ({userTypes}) => {
             </TableHead>
             <TableBody>
               {userTypes.map(type  => (
-                <TypeRow key={type.id} type={type} />
+                <TypeRow key={type.id} type={type} loadingRowId={loadingRowId} />
               ))}
             </TableBody>
           </Table>

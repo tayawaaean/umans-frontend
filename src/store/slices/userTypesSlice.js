@@ -59,6 +59,7 @@ export const updateUserType = createAsyncThunk("userTypes/updateUserType", async
 const initialState = {
   userTypes:  ['empty'],
   loading: false,
+  loadingRowId: null,
   error: null,
 };
 
@@ -95,18 +96,18 @@ const userTypesSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
           })
-          .addCase(updateUserType.pending, (state) => {
-            state.loading = true;
+          .addCase(updateUserType.pending, (state, action) => {
+            state.loadingRowId = action.meta.arg.id;
             state.error = null;
           })
           .addCase(updateUserType.fulfilled, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.userTypes = state.userTypes.map((app) =>
               app.id === action.payload.id ? action.payload : app
             );
           })
           .addCase(updateUserType.rejected, (state, action) => {
-            state.loading = false;
+            state.loadingRowId = null;
             state.error = action.payload;
 
           })
