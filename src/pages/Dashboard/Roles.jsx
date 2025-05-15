@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 //MUI components
@@ -60,6 +60,29 @@ export default function Roles() {
   }
   ,[roles, users, apps, userTypes]);
 
+  const enrichedFilteredRoles = useMemo(() => {
+    // Step 1: Enrich roles with display values
+    const enriched = roles.map(role => {
+      const user = users.find(user => user.id === role.userId);
+      const app = apps.find(app => app.id === role.appsId);
+
+      //console.log(app.name)
+      return {
+        ...role,
+        userName: user ? `${user.firstName} ${user.lastName}` : 'Unknown',
+        appName: app ? app.name : 'Unknown',
+      };
+    });
+  
+    console.log("roles: ", enriched)
+    // Step 2: Filter enriched roles
+    return enriched.filter((role) =>
+      `${role.userName} ${role.appName} ${role.userType}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
+    );
+  }, [roles, users, apps, userTypes, searchTerm]);
+
   // Filter roles based on firstName, lastName, or email
   const filterRoles = roles.filter((role) =>
     `${role.name} ${role.url} ${role.ownerOffice} ${role.userType}` //need to provide the right field since ids are being used
@@ -87,7 +110,8 @@ export default function Roles() {
     dispatch(addRole(roleData)); // Dispatch the action to add a user
     handleClose(); // Close the dialog
   };
-
+  
+//console.log("enmriched: ", enrichedFilteredRoles)
 
   return (
     <div>
@@ -127,7 +151,7 @@ export default function Roles() {
               </Grid>
             </Toolbar>
           </AppBar>
-          <RolesTable roles = {filterRoles} users={users} apps={apps} userTypes={userTypes} loadingRowId={loadingRowId} />
+          <RolesTable roles = {enrichedFilteredRoles} users={users} apps={apps} userTypes={userTypes} loadingRowId={loadingRowId} />
         </Paper>
       )}
     </div>

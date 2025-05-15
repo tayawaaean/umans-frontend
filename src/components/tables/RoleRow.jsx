@@ -25,15 +25,6 @@ const RoleRow = ({ role, users, apps, userTypes, loadingRowId }) => {
     }
   };
 
-  const appMap = apps.reduce((acc, app) => {
-    acc[app.id] = app.name;
-    return acc;
-  }, {});
-
-  const userMap = users.reduce((acc, user) => {
-    acc[user.id] = `${user.firstName} ${user.lastName}`;
-    return acc;
-  }, {});
 
   const isLoading = loadingRowId === role.id;
 
@@ -77,7 +68,7 @@ const RoleRow = ({ role, users, apps, userTypes, loadingRowId }) => {
                 ))}
             </Select>
             ) : (
-            appMap[role.appsId] || "Unknown"
+            role.appName || "Unknown"
             )}
         </TableCell>
         <TableCell align="center">
@@ -94,7 +85,7 @@ const RoleRow = ({ role, users, apps, userTypes, loadingRowId }) => {
                 ))}
             </Select>
             ) : (
-            userMap[role.userId] || "Unknown"
+            role.userName || "Unknown"
             )}
         </TableCell>
         <TableCell align="center">
