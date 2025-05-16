@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import SvgIcon from '@mui/material/SvgIcon';
 import { styled, useTheme } from '@mui/material/styles';
 import UmansLogo from './../assets/umans.svg?react';

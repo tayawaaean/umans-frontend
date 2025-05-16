@@ -26,21 +26,17 @@ const AppRoutes = () => {
       <Routes>
         {/* */}
         <Route path="/login" element={<SignIn />} />
-        <Route path="/register" element={<SignUp />} />
+        <Route path="/register" element={
+          <Suspense fallback={<LoadingScreen caption='Loading...' fullScreen={false} />}>
+            <SignUp />
+          </Suspense>
+        } />
 
         {/* */}
         <Route element={<ProtectedRoute allowedRoles={["user", "admin"]} />}>
           <Route element={<AdminLayout />}>
-            <Route path = "/" element={
-              <Suspense fallback={<LoadingScreen caption='Loading...' fullScreen={false} />}>
-                <Dashboard />
-              </Suspense>
-            } />
-            <Route path = "/users" element={
-              <Suspense fallback={<LoadingScreen caption='Loading...' fullScreen={false} />}>
-                <Users />
-              </Suspense>
-            } />
+            <Route path = "/" element={<Dashboard />} />
+            <Route path = "/users" element={<Users />} />
             <Route path = "/apps" element={
               <Suspense fallback={<LoadingScreen caption='Loading...' fullScreen={false} />}>
                 <Apps />
@@ -58,7 +54,7 @@ const AppRoutes = () => {
             } />
             <Route path = "/googleAccounts" element={
               <Suspense fallback={<LoadingScreen caption='Loading...' fullScreen={false} />}>
-                <Users />
+                 <Apps /> {/*change to google accounts component */}
               </Suspense>
             } />
             <Route path = "/sessions" element={

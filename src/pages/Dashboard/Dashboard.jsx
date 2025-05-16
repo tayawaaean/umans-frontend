@@ -45,7 +45,6 @@ const Dashboard = () => {
         data: userStats.map(stat => stat.users),
         borderColor: "#4caf50", // Green color
         backgroundColor: "rgba(76, 175, 80, 0.1)",
-        fill: true,
         tension: 0.3,
       },
     ],
@@ -60,7 +59,6 @@ const Dashboard = () => {
         data: appStats.map(stat => stat.apps),
         borderColor: "#1976d2", // Blue color
         backgroundColor: "rgba(25, 118, 210, 0.1)",
-        fill: true,
         tension: 0.3,
       },
     ],
