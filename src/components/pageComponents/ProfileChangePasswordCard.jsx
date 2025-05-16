@@ -30,7 +30,6 @@ const ProfileChangePasswordCard = () => {
   const onSubmit = async (data) => {
     try{
       const response = await dispatch(changePassword({id: user.id , data: {...data, email: user.email}})).unwrap()
-      console.log("component",response)
       if(response.success === "ok"){
         reset();
       }

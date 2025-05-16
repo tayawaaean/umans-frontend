@@ -23,7 +23,6 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Contact Form Data:', formData);
     // You can integrate backend email logic or an external service here
   };
 

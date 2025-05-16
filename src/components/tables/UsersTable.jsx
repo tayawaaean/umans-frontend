@@ -9,8 +9,6 @@ const UsersTable = ({users, loadingRowId}) => {
 
   //const users = useSelector((state) => state.users.users);
   
-  
-  console.log("rendering")
   return(
     <TableContainer sx={{ maxWidth: '100%', margin: "auto", mt: 2 }}>
           <Table>

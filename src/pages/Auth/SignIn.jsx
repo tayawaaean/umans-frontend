@@ -149,7 +149,6 @@ export default function SignIn() {
 
   //sigin handler
   const onSubmit = async (data) => {
-    console.log(data)
     try{
         const result = dispatch(login(data));
         if (result.meta?.requestStatus === "fulfilled") {

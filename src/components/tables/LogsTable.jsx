@@ -40,7 +40,6 @@ const LogsTable = ({ apps, users }) => {
     setLoading(true);
     try {
       const { logs, totalPages } = await getLogsPaginated(pageNum);
-      console.log(logs)
       setLogs(logs);
       setTotalPages(totalPages);
       setPage(pageNum);

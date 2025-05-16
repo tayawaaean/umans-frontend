@@ -10,7 +10,6 @@ export const getLogs = async (limit = 50) => {
 
   // Get logs with pagination
 export const getLogsPaginated = async ( page = 1, limit = 10 ) => {
-  console.log(page, limit)
   const response = await axiosInstance.get('/logs/paginated/', {
     params: { page, limit },
   });

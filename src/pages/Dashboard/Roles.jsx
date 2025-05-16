@@ -74,7 +74,6 @@ export default function Roles() {
       };
     });
   
-    console.log("roles: ", enriched)
     // Step 2: Filter enriched roles
     return enriched.filter((role) =>
       `${role.userName} ${role.appName} ${role.userType}`

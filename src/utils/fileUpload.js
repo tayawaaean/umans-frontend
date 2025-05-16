@@ -14,7 +14,6 @@ const fileUpload = async (file, apiUrl, setLoading, dispatch) => {
   const formData = new FormData();
   formData.append('file', file);
   const endpoint = `${URL}${apiUrl}`
-  console.log("file upload endpoint", endpoint)
   try {
     const response = await axios.post(endpoint, formData, {
       headers: {
