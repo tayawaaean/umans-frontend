@@ -14,15 +14,28 @@ export const navigationCustomizations = {
   MuiMenuItem: {
     styleOverrides: {
       root: ({ theme }) => ({
-        borderRadius: (theme.vars || theme).shape.borderRadius,
-        padding: '6px 8px',
-        [`&.${menuItemClasses.focusVisible}`]: {
-          backgroundColor: 'transparent',
+        borderRadius: 12,
+        padding: '12px 16px',
+        transition: 'all 0.2s ease-in-out',
+        '&:focus-visible': {
+          outline: `3px solid ${brand[300]}`,
+          outlineOffset: '2px',
+          backgroundColor: alpha(theme.palette.primary.main, 0.1),
+        },
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.primary.main, 0.1),
         },
         [`&.${menuItemClasses.selected}`]: {
+          backgroundColor: alpha(theme.palette.primary.main, 0.15),
+          color: theme.palette.primary.main,
+          fontWeight: 600,
           [`&.${menuItemClasses.focusVisible}`]: {
-            backgroundColor: alpha(theme.palette.action.selected, 0.3),
+            backgroundColor: alpha(theme.palette.primary.main, 0.2),
           },
+        },
+        // Screen reader support
+        '&[aria-expanded="true"]': {
+          backgroundColor: alpha(theme.palette.primary.main, 0.1),
         },
       }),
     },
@@ -64,55 +77,46 @@ export const navigationCustomizations = {
     },
     styleOverrides: {
       root: ({ theme }) => ({
-        
-        //border: '1px solid',
-        //borderColor: gray[200],
-        paddingLeft: '10px',
-        paddingRight: '10px',
-        //backgroundColor: (theme.vars || theme).palette.background.paper,
-        //boxShadow: `inset 0 1px 0 1px hsla(220, 0%, 100%, 0.6), inset 0 -1px 0 1px hsla(220, 35%, 90%, 0.5)`,
-        '&:hover': {
-          borderRadius: (theme.vars || theme).shape.borderRadius,
-          borderColor: gray[500],
-          backgroundColor: (theme.vars || theme).palette.background.paper,
-          boxShadow: `inset 0 1px 0 1px hsla(0, 0.00%, 0.00%, 0.65), inset 0 -1px 0 1px rgba(33, 109, 250, 0.5)`,
+        '&:focus-visible': {
+          outline: `3px solid ${brand[300]}`,
+          outlineOffset: '2px',
         },
-        [`&.${selectClasses.focused}`]: {
-          outlineOffset: 0,
-          borderColor: gray[400],
+        '&.Mui-focused': {
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: brand[400],
+            borderWidth: '2px',
+          },
         },
-        // '&:before, &:after': {
-        //   display: 'none',
-        // },
         ...theme.applyStyles('dark', {
-          borderRadius: (theme.vars || theme).shape.borderRadius,
-          borderColor: gray[700],
-          backgroundColor: (theme.vars || theme).palette.background.paper,
-          boxShadow: `inset 0 1px 0 1px ${alpha(gray[700], 0.15)}, inset 0 -1px 0 1px hsla(220, 0%, 0%, 0.7)`,
-          '&:hover': {
-            borderColor: alpha(gray[700], 0.7),
-            backgroundColor: (theme.vars || theme).palette.background.paper,
-            boxShadow: 'none',
+          '&:focus-visible': {
+            outline: `3px solid ${brand[300]}`,
+            outlineOffset: '2px',
           },
-          [`&.${selectClasses.focused}`]: {
-            outlineOffset: 0,
-            borderColor: gray[900],
-          },
-          // '&:before, &:after': {
-          //   display: 'none',
-          // },
         }),
       }),
       select: ({ theme }) => ({
         display: 'flex',
         alignItems: 'center',
+        '&:focus-visible': {
+          backgroundColor: alpha(theme.palette.primary.main, 0.1),
+        },
+        // Screen reader improvements
+        '&[aria-expanded="true"] + .MuiSvgIcon-root': {
+          transform: 'rotate(180deg)',
+        },
         ...theme.applyStyles('dark', {
-          display: 'flex',
-          alignItems: 'center',
           '&:focus-visible': {
-            backgroundColor: gray[900],
+            backgroundColor: alpha(theme.palette.primary.main, 0.15),
           },
         }),
+      }),
+      icon: ({ theme }) => ({
+        color: theme.palette.text.secondary,
+        transition: 'transform 0.2s ease-in-out',
+        right: 12,
+        '&.MuiSelect-iconOpen': {
+          transform: 'rotate(180deg)',
+        },
       }),
     },
   },
@@ -186,31 +190,44 @@ export const navigationCustomizations = {
   MuiTab: {
     styleOverrides: {
       root: ({ theme }) => ({
-        padding: '6px 8px',
+        padding: '12px 16px',
         marginBottom: '8px',
         textTransform: 'none',
         minWidth: 'fit-content',
         minHeight: 'fit-content',
-        color: (theme.vars || theme).palette.text.secondary,
-        borderRadius: (theme.vars || theme).shape.borderRadius,
+        color: theme.palette.text.secondary,
+        borderRadius: 12,
         border: '1px solid',
         borderColor: 'transparent',
-        ':hover': {
-          color: (theme.vars || theme).palette.text.primary,
-          backgroundColor: gray[100],
-          borderColor: gray[200],
+        transition: 'all 0.2s ease-in-out',
+        fontWeight: 500,
+        fontSize: '0.875rem',
+        '&:focus-visible': {
+          outline: `3px solid ${brand[300]}`,
+          outlineOffset: '2px',
+        },
+        '&:hover': {
+          color: theme.palette.text.primary,
+          backgroundColor: alpha(theme.palette.primary.main, 0.05),
+          borderColor: alpha(theme.palette.primary.main, 0.2),
+          transform: 'translateY(-1px)',
         },
         [`&.${tabClasses.selected}`]: {
-          color: gray[900],
+          color: theme.palette.primary.main,
+          fontWeight: 600,
+          backgroundColor: alpha(theme.palette.primary.main, 0.1),
+          borderColor: alpha(theme.palette.primary.main, 0.3),
         },
         ...theme.applyStyles('dark', {
-          ':hover': {
-            color: (theme.vars || theme).palette.text.primary,
-            backgroundColor: gray[800],
-            borderColor: gray[700],
+          '&:hover': {
+            color: theme.palette.text.primary,
+            backgroundColor: alpha(theme.palette.primary.main, 0.1),
+            borderColor: alpha(theme.palette.primary.main, 0.3),
           },
           [`&.${tabClasses.selected}`]: {
-            color: '#fff',
+            color: theme.palette.primary.light,
+            backgroundColor: alpha(theme.palette.primary.main, 0.15),
+            borderColor: alpha(theme.palette.primary.main, 0.4),
           },
         }),
       }),
@@ -274,6 +291,81 @@ export const navigationCustomizations = {
         '&.Mui-completed': {
           opacity: 0.6,
           ...theme.applyStyles('dark', { opacity: 0.5 }),
+        },
+      }),
+    },
+  },
+
+  // Additional accessibility enhancements
+  MuiListItemButton: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '&:focus-visible': {
+          outline: `3px solid ${brand[300]}`,
+          outlineOffset: '2px',
+          backgroundColor: alpha(theme.palette.primary.main, 0.1),
+        },
+        '&[aria-current="page"]': {
+          backgroundColor: alpha(theme.palette.primary.main, 0.15),
+          color: theme.palette.primary.main,
+          fontWeight: 600,
+        },
+      }),
+    },
+  },
+
+  MuiBreadcrumbs: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '& .MuiBreadcrumbs-separator': {
+          color: theme.palette.text.secondary,
+        },
+        '& .MuiLink-root': {
+          '&:focus-visible': {
+            outline: `3px solid ${brand[300]}`,
+            outlineOffset: '2px',
+          },
+        },
+      }),
+    },
+  },
+
+  MuiPagination: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '& .MuiPaginationItem-root': {
+          '&:focus-visible': {
+            outline: `3px solid ${brand[300]}`,
+            outlineOffset: '2px',
+          },
+        },
+      }),
+    },
+  },
+
+  MuiBottomNavigationAction: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '&:focus-visible': {
+          outline: `3px solid ${brand[300]}`,
+          outlineOffset: '2px',
+        },
+        '&.Mui-selected': {
+          '& .MuiBottomNavigationAction-label': {
+            fontSize: '0.75rem',
+            fontWeight: 600,
+          },
+        },
+      }),
+    },
+  },
+
+  MuiSpeedDialAction: {
+    styleOverrides: {
+      fab: ({ theme }) => ({
+        '&:focus-visible': {
+          outline: `3px solid ${brand[300]}`,
+          outlineOffset: '2px',
         },
       }),
     },

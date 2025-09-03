@@ -1,24 +1,33 @@
-import React,{ useEffect } from "react";
+import React,{ useEffect, useRef } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { validateTokens } from '../../store/slices/authSlice';
+import LoadingScreen from '../LoadingScreen';
 
 const ProtectedRoute = ({ children, allowedRoles  }) => {
   const dispatch = useDispatch();
-  let once = true;
+  const hasValidated = useRef(false);
+  const { user, isAuthenticated, loading, accessToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (once){
+    // Only validate tokens if we don't have a valid token and haven't validated yet
+    if (!hasValidated.current && !accessToken) {
       dispatch(validateTokens());
-      once = false
+      hasValidated.current = true;
+    } else if (accessToken) {
+      // If we have a token, mark as validated to avoid unnecessary API calls
+      hasValidated.current = true;
     }
-  }, [dispatch]);
-
-  const { user, isAuthenticated } = useSelector((state) => state.auth);
+  }, [dispatch, accessToken]);
+  
+  // Show loading while validating tokens (only if we don't have a token)
+  if (loading && !accessToken && !hasValidated.current) {
+    return <LoadingScreen caption="Verifying authentication..." />;
+  }
   
   //redirect if user is not authenticated
   if (!isAuthenticated){
-    return <Navigate to="/login" />
+    return <Navigate to="/login" replace />
   }
   //redirect if roles are not ok
   if (allowedRoles && !allowedRoles.includes(user?.role)) {

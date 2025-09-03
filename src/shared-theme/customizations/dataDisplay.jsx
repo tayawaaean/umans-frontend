@@ -220,26 +220,209 @@ export const dataDisplayCustomizations = {
   MuiTableCell: {
     styleOverrides: {
       root: ({theme}) => ({
-        fontWeight: 'regular',
-        //fontSize: '1rem',
-        padding: '4px 8px',
-        textAlign: 'center',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
+        fontWeight: 400,
+        fontSize: '0.875rem',
+        lineHeight: 1.43,
+        padding: '12px 16px',
+        borderBottom: `1px solid ${theme.palette.mode === 'light' ? gray[200] : gray[700]}`,
+        transition: 'all 0.2s ease-in-out',
+        position: 'relative',
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.action.hover, 0.5),
+        },
       }),
       head: ({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? gray[700] : gray[ 100],
-        fontSize: '1.1rem',
-        padding: '10px 8px',
-        color: theme.palette.mode === 'dark' ? '#fff' : '#000',
+        background: theme.palette.mode === 'light'
+          ? `linear-gradient(135deg, ${gray[50]} 0%, ${gray[100]} 100%)`
+          : `linear-gradient(135deg, ${gray[800]} 0%, ${gray[900]} 100%)`,
+        fontSize: '0.875rem',
+        fontWeight: 600,
+        padding: '16px 16px',
+        color: theme.palette.text.primary,
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em',
+        borderBottom: `2px solid ${theme.palette.mode === 'light' ? gray[300] : gray[600]}`,
+        position: 'sticky',
+        top: 0,
+        zIndex: 10,
+        '&:hover': {
+          background: theme.palette.mode === 'light'
+            ? `linear-gradient(135deg, ${gray[100]} 0%, ${gray[200]} 100%)`
+            : `linear-gradient(135deg, ${gray[700]} 0%, ${gray[800]} 100%)`,
+        },
       }),
-      body: ({ theme }) => ( {
-        color: theme.palette.mode === 'dark' ? '#ccc' : '333',
+      body: ({ theme }) => ({
+        color: theme.palette.text.primary,
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.action.hover, 0.3),
+          transform: 'translateY(-1px)',
+          boxShadow: `0 2px 8px ${alpha(theme.palette.action.hover, 0.2)}`,
+        },
+      }),
+      stickyHeader: ({ theme }) => ({
+        background: theme.palette.mode === 'light'
+          ? `linear-gradient(135deg, ${gray[50]} 0%, ${gray[100]} 100%)`
+          : `linear-gradient(135deg, ${gray[800]} 0%, ${gray[900]} 100%)`,
       }),
     },
     defaultProps: {
-      align: 'center',
+      align: 'left',
+    },
+  },
+
+  MuiTableRow: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.action.hover, 0.4),
+          transform: 'translateY(-1px)',
+          boxShadow: `0 4px 12px ${alpha(theme.palette.action.hover, 0.3)}`,
+          '& .MuiTableCell-root': {
+            backgroundColor: 'transparent',
+          },
+        },
+        '&.Mui-selected': {
+          backgroundColor: alpha(brand[50], 0.3),
+          '&:hover': {
+            backgroundColor: alpha(brand[50], 0.5),
+          },
+          '& .MuiTableCell-root': {
+            backgroundColor: 'transparent',
+          },
+        },
+      }),
+      head: {
+        '&:hover': {
+          backgroundColor: 'transparent !important',
+          transform: 'none !important',
+          boxShadow: 'none !important',
+        },
+      },
+    },
+  },
+
+  MuiTableHead: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        background: theme.palette.mode === 'light'
+          ? `linear-gradient(135deg, ${gray[50]} 0%, ${gray[100]} 100%)`
+          : `linear-gradient(135deg, ${gray[800]} 0%, ${gray[900]} 100%)`,
+        '& .MuiTableSortLabel-root': {
+          color: theme.palette.text.primary,
+          fontWeight: 600,
+          fontSize: '0.875rem',
+          textTransform: 'uppercase',
+          letterSpacing: '0.05em',
+          '&:hover': {
+            color: brand[500],
+            '& .MuiTableSortLabel-icon': {
+              opacity: 1,
+              color: brand[500],
+            },
+          },
+          '&.Mui-active': {
+            color: brand[500],
+            fontWeight: 700,
+            '& .MuiTableSortLabel-icon': {
+              opacity: 1,
+              color: brand[500],
+            },
+          },
+        },
+        '& .MuiTableSortLabel-icon': {
+          opacity: 0.5,
+          transition: 'all 0.2s ease-in-out',
+          fontSize: '1.25rem',
+        },
+      }),
+    },
+  },
+
+  MuiTableSortLabel: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '&:hover': {
+          color: brand[500],
+        },
+        '&.Mui-active': {
+          color: brand[500],
+          fontWeight: 600,
+        },
+      }),
+      icon: ({ theme }) => ({
+        color: `${brand[500]} !important`,
+        opacity: 0.5,
+        transition: 'all 0.2s ease-in-out',
+      }),
+    },
+  },
+
+  MuiTableContainer: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        borderRadius: 16,
+        background: theme.palette.mode === 'light'
+          ? `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${gray[50]} 100%)`
+          : `linear-gradient(135deg, ${theme.palette.background.paper} 0%, ${gray[900]} 100%)`,
+        border: `1px solid ${theme.palette.mode === 'light' ? gray[200] : gray[800]}`,
+        boxShadow: theme.palette.mode === 'light'
+          ? '0 8px 32px rgba(0, 0, 0, 0.1)'
+          : '0 8px 32px rgba(0, 0, 0, 0.3)',
+        backdropFilter: 'blur(10px)',
+        overflow: 'hidden',
+        '& .MuiTable-root': {
+          borderCollapse: 'separate',
+          borderSpacing: 0,
+        },
+      }),
+    },
+  },
+
+  MuiTable: {
+    styleOverrides: {
+      root: {
+        tableLayout: 'auto',
+        '& .MuiTableHead-root .MuiTableCell-root': {
+          position: 'relative',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: 0,
+            left: '50%',
+            width: 0,
+            height: '2px',
+            background: `linear-gradient(90deg, transparent, ${brand[500]}, transparent)`,
+            transition: 'width 0.3s ease-in-out',
+            transform: 'translateX(-50%)',
+          },
+          '&:hover::after': {
+            width: '80%',
+          },
+        },
+      },
+    },
+  },
+
+  MuiTableBody: {
+    styleOverrides: {
+      root: ({ theme }) => ({
+        '& .MuiTableRow-root:last-child .MuiTableCell-root': {
+          borderBottom: 'none',
+        },
+        '& .MuiTableRow-root': {
+          '&:nth-of-type(even)': {
+            backgroundColor: theme.palette.mode === 'light'
+              ? alpha(gray[50], 0.3)
+              : alpha(gray[900], 0.3),
+          },
+          '&:hover': {
+            '&:nth-of-type(even)': {
+              backgroundColor: alpha(theme.palette.action.hover, 0.4),
+            },
+          },
+        },
+      }),
     },
   },
 

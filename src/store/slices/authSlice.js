@@ -66,8 +66,19 @@ export const refreshAccessToken = createAsyncThunk("auth/refresh", async (user, 
 
 
 
+const getInitialUser = () => {
+  try {
+    const user = localStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+  } catch (error) {
+    console.error("Error parsing user from localStorage:", error);
+    localStorage.removeItem("user");
+    return null;
+  }
+};
+
 const initialState = {
-  user: JSON.parse(localStorage.getItem("user")) || null,
+  user: getInitialUser(),
   accessToken: localStorage.getItem("accessToken") || null,
   loading: false,
   error: null,
@@ -99,7 +110,11 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
                 state.accessToken = action.payload.token.accessToken;
                 state.isAuthenticated = true;
-
+                state.error = null;
+                
+                // Ensure localStorage is updated
+                localStorage.setItem("user", JSON.stringify(action.payload.user));
+                localStorage.setItem("accessToken", action.payload.token.accessToken);
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false;
@@ -123,9 +138,12 @@ const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(validateTokens.fulfilled, (state) => {
+                state.loading = false;
                 state.isAuthenticated = true;
             })
             .addCase(validateTokens.rejected, (state, action) => {
+                state.loading = false;
+                state.isAuthenticated = false;
                 state.error = action.payload;
             })
             .addCase(logout.fulfilled, (state) => {

@@ -75,6 +75,15 @@ export const getDesignTokens = (mode) => {
       ? 'hsla(220, 30%, 5%, 0.7) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.8) 0px 8px 16px -5px'
       : 'hsla(220, 30%, 5%, 0.07) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.07) 0px 8px 16px -5px';
 
+  // Add modern shadow variants
+  customShadows[2] = mode === 'dark'
+    ? 'hsla(220, 30%, 5%, 0.5) 0px 8px 24px 0px, hsla(220, 25%, 10%, 0.6) 0px 16px 32px -8px'
+    : 'hsla(220, 30%, 5%, 0.1) 0px 8px 24px 0px, hsla(220, 25%, 10%, 0.1) 0px 16px 32px -8px';
+
+  customShadows[3] = mode === 'dark'
+    ? 'hsla(220, 30%, 5%, 0.8) 0px 16px 40px 0px, hsla(220, 25%, 10%, 0.9) 0px 24px 48px -12px'
+    : 'hsla(220, 30%, 5%, 0.15) 0px 16px 40px 0px, hsla(220, 25%, 10%, 0.15) 0px 24px 48px -12px';
+
   return {
     palette: {
       mode,
@@ -209,9 +218,26 @@ export const getDesignTokens = (mode) => {
       },
     },
     shape: {
-      borderRadius: 8,
+      borderRadius: 12, // Modern rounded corners
     },
     shadows: customShadows,
+    transitions: {
+      duration: {
+        shortest: 150,
+        shorter: 200,
+        short: 250,
+        standard: 300,
+        complex: 375,
+        enteringScreen: 225,
+        leavingScreen: 195,
+      },
+      easing: {
+        easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        easeOut: 'cubic-bezier(0.0, 0, 0.2, 1)',
+        easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+        sharp: 'cubic-bezier(0.4, 0, 0.6, 1)',
+      },
+    },
   };
 };
 
